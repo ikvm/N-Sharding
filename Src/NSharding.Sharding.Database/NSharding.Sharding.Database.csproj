@@ -49,6 +49,7 @@
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeMapping.cs" />
     <Compile Include="DataTypeUtils.cs" />
+    <Compile Include="DbDataType.cs" />
     <Compile Include="DbType.cs" />
     <Compile Include="IDataSourceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
