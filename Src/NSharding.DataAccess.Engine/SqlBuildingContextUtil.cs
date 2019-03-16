@@ -8,6 +8,9 @@ namespace NSharding.DataAccess.Core
 {
     class SqlBuildingContextUtil
     {
+        public SqlBuildingContextUtil()
+        {
 
+        }
     }
 }
