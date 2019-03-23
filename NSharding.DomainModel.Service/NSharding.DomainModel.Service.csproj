@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{96C96893-94B6-466D-B7F9-841410DE2B5E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NSharding.DomainModel.Service</RootNamespace>
+    <AssemblyName>NSharding.DomainModel.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataObjectManageService.cs" />
+    <Compile Include="DataSourceService.cs" />
+    <Compile Include="DomainModelManageService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Src\NSharding.DomainModel.Manager\NSharding.DomainModel.Manager.csproj">
+      <Project>{28017DC1-3E97-4E97-9A39-9CA857E425C7}</Project>
+      <Name>NSharding.DomainModel.Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Src\NSharding.Sharding.Database\NSharding.Sharding.Database.csproj">
+      <Project>{CC664272-AD17-4BB5-B4CF-AA62ABA5B033}</Project>
+      <Name>NSharding.Sharding.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Src\NSharding.Sharding.DomainModel\NSharding.DomainModel.Spi.csproj">
+      <Project>{A2BDEF5E-1909-48D7-981C-366BE37F9F84}</Project>
+      <Name>NSharding.DomainModel.Spi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Src\NSharding.Sharding.RuleManager\NSharding.Sharding.RuleManager.csproj">
+      <Project>{3FE62CC0-10C3-44B1-BF2D-39988060BEFC}</Project>
+      <Name>NSharding.Sharding.RuleManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Src\NSharding.Sharding.Rule\NSharding.Sharding.Rule.csproj">
+      <Project>{619237B4-A625-4C81-83AC-86FA47F37EA3}</Project>
+      <Name>NSharding.Sharding.Rule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
