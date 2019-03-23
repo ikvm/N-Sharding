@@ -17,9 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DomainModel.Manag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DataAccess.Core", "Src\NSharding.DataAccess.Engine\NSharding.DataAccess.Core.csproj", "{A01B4DC5-2383-4B2D-9447-5C16769C7D3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DataAccess.Service", "NSharding.DataAccess.Service\NSharding.DataAccess.Service.csproj", "{3688B905-957C-4E04-9108-501425A17B72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DataAccess.Service", "Src\NSharding.DataAccess.Service\NSharding.DataAccess.Service.csproj", "{3688B905-957C-4E04-9108-501425A17B72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DomainModel.Service", "NSharding.DomainModel.Service\NSharding.DomainModel.Service.csproj", "{96C96893-94B6-466D-B7F9-841410DE2B5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DomainModel.Service", "Src\NSharding.DomainModel.Service\NSharding.DomainModel.Service.csproj", "{96C96893-94B6-466D-B7F9-841410DE2B5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
