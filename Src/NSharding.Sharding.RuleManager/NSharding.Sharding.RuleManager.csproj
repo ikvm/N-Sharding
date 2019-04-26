@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Dac\DacServiceManager.cs" />
     <Compile Include="Dac\IShardingStrategyDao.cs" />
+    <Compile Include="Dac\ShardingStrategyEFDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShardingRuleManager.cs" />
     <Compile Include="ShardingRuleService.cs" />
