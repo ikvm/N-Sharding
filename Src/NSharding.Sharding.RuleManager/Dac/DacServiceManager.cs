@@ -29,6 +29,7 @@ namespace NSharding.Sharding.RuleManager.Dac
                 {
                     if (shardingStrategyDao == null)
                     {
+                        shardingStrategyDao = new ShardingStrategyEFDao();
                         //TODO 对接ELB或者DBHelper
                         //shardingStrategyDao = DaoService.GetInstance(ConnectionString).GetDao<IShardingStrategyDao>();
                     }

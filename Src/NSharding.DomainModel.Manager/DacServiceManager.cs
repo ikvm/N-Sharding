@@ -38,6 +38,7 @@ namespace NSharding.DomainModel.Manager
                 {
                     if (dataSourceDao == null)
                     {
+                        dataSourceDao = new DataSourceEFDao();
                         //dataSourceDao = DaoService.GetInstance(ConnectionString).GetDao<IDataSourceDao>();
                     }
                 }
