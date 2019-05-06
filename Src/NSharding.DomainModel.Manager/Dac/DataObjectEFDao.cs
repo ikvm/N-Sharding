@@ -6,11 +6,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace NSharding.DomainModel.Manager.Dac
+namespace NSharding.DomainModel.Manager
 {
     class DataObjectEFDao : DbContext, IDataObjectDao
     {
         public DbSet<DataObject> DataObjects { get; set; }
+
+        public DataObjectEFDao() : base("Metadata")
+        {
+
+        }
 
         /// <summary>
         /// 数据对象保存

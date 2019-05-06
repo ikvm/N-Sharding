@@ -15,6 +15,11 @@ namespace NSharding.DomainModel.Manager
 
         public DbSet<DatabaseTable> DatabaseTables { get; set; }
 
+        public DataSourceEFDao() : base("Metadata")
+        {
+
+        }
+
         // <summary>
         /// 数据源保存
         /// </summary>

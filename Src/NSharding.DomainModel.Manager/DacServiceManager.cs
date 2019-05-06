@@ -60,7 +60,7 @@ namespace NSharding.DomainModel.Manager
                 {
                     if (dataObjectDao == null)
                     {
-                        //dataObjectDao = DaoService.GetInstance(ConnectionString).GetDao<IDataObjectDao>();
+                        dataObjectDao = new DataObjectEFDao();
                     }
                 }
             }
@@ -80,7 +80,7 @@ namespace NSharding.DomainModel.Manager
                 {
                     if (domainModelDao == null)
                     {
-                        //domainModelDao = DaoService.GetInstance(ConnectionString).GetDao<IDomainModelDao>();
+                        domainModelDao = new DomainModelEFDao();
                     }
                 }
             }
