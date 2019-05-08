@@ -14,6 +14,11 @@ namespace NSharding.Sharding.RuleManager.Dac
 
         public DbSet<ShardingColumn> ShardingColumns { get; set; }
 
+        public ShardingStrategyEFDao() : base("Metadata")
+        {
+
+        }
+
         /// <summary>
         /// 保存分区策略
         /// </summary>
