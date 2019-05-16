@@ -1,4 +1,4 @@
-![logo](https://github.com/zhouguoqing/N-Sharding/blob/master/Resource/N-sharing.png)  
+![logo](https://github.com/zhouguoqing/N-Sharding/blob/master/Resource/N-sharding.png)  
 # N-Sharding
 支持分库分表的数据库访问框架(.Net)
 
