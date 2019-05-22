@@ -11,9 +11,11 @@ namespace NSharding.DataAccess.Core
         DataSet ExecuteDataSet(string sqlString);
         DataSet ExecuteDataSet(string sqlString, IDbDataParameter[] dbDataParameter);
         //DataSet ExecuteDataSet(string[] sqlStrings);
-        object ExecuteScalar(string sqlStrings);
-        //IDataReader ExecuteReader(string sqlStrings);
-        //void ExecSqlStatement(string sqlString, List<IDbDataParameter> parameters);
-        //IDbDataParameter MakeInParam(string fieldName, object dateTime, object value);
+        object ExecuteScalar(string sqlString);
+        IDataReader ExecuteReader(string sqlString);
+
+        void ExecSqlStatement(string sqlString, List<IDbDataParameter> parameters);
+
+        IDbDataParameter MakeInParam(string parameterName, DbType dbType, object value);
     }
 }

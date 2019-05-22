@@ -57,6 +57,7 @@
     <Compile Include="DataAccessEngine.cs" />
     <Compile Include="Database\DatabaseFactory.cs" />
     <Compile Include="Database\DatabaseImpl.cs" />
+    <Compile Include="Database\EntityFrameworkExtension.cs" />
     <Compile Include="Database\IDatabase.cs" />
     <Compile Include="Database\ISQLDatabase.cs" />
     <Compile Include="Database\SQLDatabase.cs" />

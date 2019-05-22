@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NSharding.DataAccess.Core.Database
+namespace NSharding.DataAccess.Core
 {
     class SQLDatabase : DbContext, ITeldDatabase
     {
@@ -15,6 +15,7 @@ namespace NSharding.DataAccess.Core.Database
         {
 
         }
+
         public void ExecSqlStatement(string sqlString)
         {
             this.Database.ExecuteSqlCommand(sqlString);
@@ -23,15 +24,35 @@ namespace NSharding.DataAccess.Core.Database
         {
             this.Database.ExecuteSqlCommand(sqlString, dbDataParameter);
         }
+
         public DataSet ExecuteDataSet(string sqlString)
         {
-            return new DataSet();
+            return this.Database.ExecuteSqlDataSet(sqlString, null);
         }
 
         public DataSet ExecuteDataSet(string sqlString, IDbDataParameter[] dbDataParameter)
         {
-            return new DataSet();
+            return this.Database.ExecuteSqlDataSet(sqlString, dbDataParameter);
         }
 
+        public object ExecuteScalar(string sqlString)
+        {
+            return this.Database.ExecuteScalar(sqlString, null);
+        }
+
+        public IDataReader ExecuteReader(string sqlString)
+        {
+            return this.Database.ExecuteReader(sqlString, null);
+        }
+
+        public void ExecSqlStatement(string sqlString, List<IDbDataParameter> parameters)
+        {
+            this.Database.ExecSqlStatement(sqlString, parameters);
+        }
+
+        public IDbDataParameter MakeInParam(string parameterName, DbType dbType, object value)
+        {
+            return this.Database.MakeInParam(parameterName, dbType, value);
+        }
     }
 }

@@ -25,8 +25,7 @@ namespace NSharding.DataAccess.Core
         {
             var dataSourceName = sqlStatement.SqlBuildingInfo.DataSource;
 
-            return null;
-            //return TeldDatabaseFactory.GetDataBase(dataSourceName);
+            return new SQLDatabase(dataSourceName);
         }
 
         /// <summary>
@@ -36,8 +35,7 @@ namespace NSharding.DataAccess.Core
         /// <returns>数据库服务</returns>
         public ITeldDatabase GetDatabase(string dataSourceName = "")
         {
-            return null;
-            //return TeldDatabaseFactory.GetDataBase(dataSourceName);
+            return new SQLDatabase(dataSourceName);
         }
 
         /// <summary>
@@ -124,10 +122,24 @@ namespace NSharding.DataAccess.Core
             if (sql == null)
                 throw new ArgumentNullException("DatabaseImpl.GetData.sql");
 
-            var sqlStrings = new string[1] { sql.ToSQL() };
-            var tableNames = new string[1] { sql.SqlBuildingInfo.CurrentNode.ID };
+            using (var db = GetDatabase(sql.SqlBuildingInfo.DataSource))
+            {
+                try
+                {
+                    DataSet dataset = db.ExecuteDataSet(sql.ToSQL());
+                    if (dataset != null && dataset.Tables.Count > 0)
+                    {
+                        dataset.Tables[0].TableName = sql.SqlBuildingInfo.CurrentNode.ID;
+                    }
 
-            return GetData(sql.SqlBuildingInfo.DataSource, sqlStrings, tableNames);
+                    return dataset;
+                }
+                catch (Exception e)
+                {
+                    MonitorError(e, sql.ToSQL());
+                    throw;
+                }
+            }
         }
 
         /// <summary>
@@ -195,35 +207,6 @@ namespace NSharding.DataAccess.Core
             {
                 MonitorError(e, new string[sqls.Count]);
                 throw;
-            }
-        }
-
-        /// <summary>
-        /// 获取数据
-        /// </summary>
-        /// <param name="dataSourceName">数据源名称</param>
-        /// <param name="sqlStrings">SQL语句</param>
-        /// <param name="tableNames">表名称</param>
-        /// <returns>数据集</returns>
-        private DataSet GetData(string dataSourceName, string[] sqlStrings, string[] tableNames)
-        {
-            using (var db = GetDatabase(dataSourceName))
-            {
-                try
-                {
-                    DataSet dataset = db.ExecuteDataSet(sqlStrings);
-                    for (int i = 0; i < tableNames.Length; i++)
-                    {
-                        dataset.Tables[i].TableName = tableNames[i];
-                    }
-
-                    return dataset;
-                }
-                catch (Exception e)
-                {
-                    MonitorError(e, sqlStrings);
-                    throw;
-                }
             }
         }
 
@@ -466,26 +449,26 @@ namespace NSharding.DataAccess.Core
             {
                 case ElementDataType.DateTime:
                 case ElementDataType.Date:
-                    parameter = db.MakeInParam(field.FieldName, DbDataType.DateTime, fieldValue.Value);
+                    parameter = db.MakeInParam(field.FieldName, DbType.DateTime, fieldValue.Value);
                     break;
                 case ElementDataType.Binary:
                     {
                         byte[] byteAry = fieldValue.Value as Byte[];
-                        parameter = db.MakeInParam(field.FieldName, DbDataType.Blob, fieldValue.Value);
+                        parameter = db.MakeInParam(field.FieldName, DbType.Binary, fieldValue.Value);
                         break;
                     }
                 case ElementDataType.Boolean:
                 case ElementDataType.Integer:
-                    parameter = db.MakeInParam(field.FieldName, DbDataType.Int, fieldValue.Value);
+                    parameter = db.MakeInParam(field.FieldName, DbType.Int32, fieldValue.Value);
                     break;
                 case ElementDataType.Decimal:
-                    parameter = db.MakeInParam(field.FieldName, DbDataType.Decimal, fieldValue.Value);
+                    parameter = db.MakeInParam(field.FieldName, DbType.Decimal, fieldValue.Value);
                     break;
                 case ElementDataType.String:
-                    parameter = db.MakeInParam(field.FieldName, DbDataType.VarChar, fieldValue.Value);
+                    parameter = db.MakeInParam(field.FieldName, DbType.String, fieldValue.Value);
                     break;
                 case ElementDataType.Text:
-                    parameter = db.MakeInParam(field.FieldName, DbDataType.Clob, fieldValue.Value);
+                    parameter = db.MakeInParam(field.FieldName, DbType.String, fieldValue.Value);
                     break;
                 default:
                     throw new NotSupportedException(((ElementDataType)fieldValue.DataType).ToString());
