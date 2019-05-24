@@ -42,9 +42,11 @@
   <ItemGroup>
     <Compile Include="DbColumnAttribute.cs" />
     <Compile Include="DbTableAttribute.cs" />
+    <Compile Include="DomainModelAttribute.cs" />
     <Compile Include="DomainObjectAttribute.cs" />
     <Compile Include="ElementAttribute.cs" />
     <Compile Include="IgnoreAttribute.cs" />
+    <Compile Include="LogicDeleteAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
