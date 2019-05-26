@@ -45,6 +45,7 @@
     <Compile Include="AssociateType.cs" />
     <Compile Include="Association.cs" />
     <Compile Include="AssociationRefElement.cs" />
+    <Compile Include="CacheScope.cs" />
     <Compile Include="DomainModel.cs" />
     <Compile Include="DomainObject.cs" />
     <Compile Include="DomainObjectElement.cs" />
