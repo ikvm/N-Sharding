@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssociationAttribute.cs" />
     <Compile Include="CacheAttribute.cs" />
     <Compile Include="DbColumnAttribute.cs" />
     <Compile Include="DbTableAttribute.cs" />
@@ -47,6 +48,8 @@
     <Compile Include="DomainObjectAttribute.cs" />
     <Compile Include="ElementAttribute.cs" />
     <Compile Include="IgnoreAttribute.cs" />
+    <Compile Include="InnerJoinAttribute.cs" />
+    <Compile Include="LeftJoinAttribute.cs" />
     <Compile Include="LogicDeleteAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
