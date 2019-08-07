@@ -16,3 +16,54 @@
 
 # Installation
 * [NuGet package] 近期发布最新的Nuget包
+
+#Demo
+~~~CSharp
+public void AddDataSourceTransaction()
+        {
+            var dataSource = new DataSource()
+            {
+                Name = "DB1",
+                DbType = DbType.SQLServer,
+                IsSharding = true,
+                Description = "DB"
+            };
+
+            var dbLink = new DatabaseLink()
+            {
+                Name = "DB-SD",
+                ConnectionString = "DB-SD",
+                DataSourceName = "DB1",
+                DataSource = dataSource
+            };
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_QD" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_JN" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_LY" });
+            dataSource.DbLinks.Add(dbLink);
+
+            var dbLinkHB = new DatabaseLink()
+            {
+                Name = "DBHB",
+                ConnectionString = "DBHB",
+                DataSourceName = "DB1",
+                DataSource = dataSource
+            };
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_BJ" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_LF" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_SJZ" });
+            dataSource.DbLinks.Add(dbLinkHB);
+
+            var tasks = new List<Task>();
+            for (int i = 0; i < 100; i++)
+            {
+                tasks.Add(
+                Task.Factory.StartNew(() =>
+                {
+                    var manager = new DataSourceManager();
+                    manager.SaveDataSource(dataSource);
+                }));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+        }
+~~~
