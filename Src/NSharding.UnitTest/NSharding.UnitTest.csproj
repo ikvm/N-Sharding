@@ -51,6 +51,7 @@
     <Compile Include="DomainModelUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataSourceTest.cs" />
+    <Compile Include="ShardingRuleUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -64,6 +65,14 @@
     <ProjectReference Include="..\NSharding.Sharding.Database\NSharding.Sharding.Database.csproj">
       <Project>{CC664272-AD17-4BB5-B4CF-AA62ABA5B033}</Project>
       <Name>NSharding.Sharding.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NSharding.Sharding.RuleManager\NSharding.Sharding.RuleManager.csproj">
+      <Project>{3fe62cc0-10c3-44b1-bf2d-39988060befc}</Project>
+      <Name>NSharding.Sharding.RuleManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NSharding.Sharding.Rule\NSharding.Sharding.Rule.csproj">
+      <Project>{619237B4-A625-4C81-83AC-86FA47F37EA3}</Project>
+      <Name>NSharding.Sharding.Rule</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
