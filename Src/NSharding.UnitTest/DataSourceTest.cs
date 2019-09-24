@@ -30,9 +30,9 @@ namespace NSharding.UnitTest
                 DataSourceName = "DB1",
                 DataSource = dataSource
             };
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_QD" });
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_JN" });
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_LY" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "Orders_QD" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "Orders_JN" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "Orders_LY" });
             dataSource.DbLinks.Add(dbLink);
 
             var dbLinkHB = new DatabaseLink()
@@ -42,9 +42,9 @@ namespace NSharding.UnitTest
                 DataSourceName = "DB1",
                 DataSource = dataSource
             };
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_BJ" });
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_LF" });
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_SJZ" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "Orders_BJ" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "Orders_LF" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "Orders_SJZ" });
             dataSource.DbLinks.Add(dbLinkHB);
 
             var tasks = new List<Task>();
@@ -79,9 +79,9 @@ namespace NSharding.UnitTest
                 DataSourceName = "DB1",
                 DataSource = dataSource
             };
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_QD" });
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_JN" });
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_LY" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "Orders_QD" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "Orders_JN" });
+            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "Orders_LY" });
             dataSource.DbLinks.Add(dbLink);
 
             var dbLinkHB = new DatabaseLink()
@@ -91,9 +91,9 @@ namespace NSharding.UnitTest
                 DataSourceName = "DB1",
                 DataSource = dataSource
             };
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_BJ" });
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_LF" });
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_SJZ" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "Orders_BJ" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "Orders_LF" });
+            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "Orders_SJZ" });
             dataSource.DbLinks.Add(dbLinkHB);
 
             var manager = new DataSourceManager();
