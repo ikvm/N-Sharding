@@ -42,10 +42,15 @@
   <ItemGroup>
     <Compile Include="DataObjectManageService.cs" />
     <Compile Include="DataSourceService.cs" />
+    <Compile Include="DomainModelBuilder.cs" />
     <Compile Include="DomainModelManageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NSharding.DomainModel.Annotation\NSharding.DomainModel.Annotation.csproj">
+      <Project>{A149B331-1B4D-4E7E-B078-789CBBA1B7B7}</Project>
+      <Name>NSharding.DomainModel.Annotation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NSharding.DomainModel.Manager\NSharding.DomainModel.Manager.csproj">
       <Project>{28017DC1-3E97-4E97-9A39-9CA857E425C7}</Project>
       <Name>NSharding.DomainModel.Manager</Name>
