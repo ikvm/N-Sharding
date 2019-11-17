@@ -19,17 +19,20 @@ namespace NSharding.DomainModel.Annotation
         /// </summary>
         public bool IsRootObject { get; set; }
 
+        public bool IsLazyload { get; set; }
+
 
         /// <summary>
         /// 父级领域对象
         /// </summary>
         public string ParentObject { get; set; }
 
-        public DomainObjectAttribute(string name, string parentObject = "", bool isRootObject = false)
+        public DomainObjectAttribute(string name, string parentObject = "", bool isRootObject = false,bool isLazyload = false)
         {
             this.Name = name;
             this.ParentObject = parentObject;
             this.IsRootObject = isRootObject;
+            this.IsLazyload = isLazyload;
         }
     }
 }
