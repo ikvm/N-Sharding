@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DataAccess.Spi", "Src\NSharding.DataAccess.Spi\NSharding.DataAccess.Spi.csproj", "{259A1DBE-386C-43C7-8892-AA37E9C40E66}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.UnitTest", "Src\NSharding.UnitTest\NSharding.UnitTest.csproj", "{73BB5A0E-AB0E-455C-BD06-A2F489258825}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DomainModel.Annotation", "Src\NSharding.DomainModel.Annotation\NSharding.DomainModel.Annotation.csproj", "{A149B331-1B4D-4E7E-B078-789CBBA1B7B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.ORMapping.Spi", "NSharding.ORMapping.Spi\NSharding.ORMapping.Spi.csproj", "{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{A149B331-1B4D-4E7E-B078-789CBBA1B7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A149B331-1B4D-4E7E-B078-789CBBA1B7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A149B331-1B4D-4E7E-B078-789CBBA1B7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

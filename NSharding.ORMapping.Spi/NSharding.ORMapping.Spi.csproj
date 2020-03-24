@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{259A1DBE-386C-43C7-8892-AA37E9C40E66}</ProjectGuid>
+    <ProjectGuid>{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NSharding.DataAccess.Spi</RootNamespace>
-    <AssemblyName>NSharding.DataAccess.Spi</AssemblyName>
+    <RootNamespace>NSharding.ORMapping.Spi</RootNamespace>
+    <AssemblyName>NSharding.ORMapping.Spi</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,30 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccessOpType.cs" />
-    <Compile Include="DbDataType.cs" />
-    <Compile Include="IDataAccess.cs" />
-    <Compile Include="IDatabase.cs" />
-    <Compile Include="IDataDeleteService.cs" />
-    <Compile Include="IDataQueryService.cs" />
-    <Compile Include="IDataSaveService.cs" />
-    <Compile Include="IDataUpdateService.cs" />
-    <Compile Include="PageParameter.cs" />
+    <Compile Include="IORMPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryCondition.cs" />
-    <Compile Include="QueryFilter.cs" />
-    <Compile Include="QueryProjectionField.cs" />
-    <Compile Include="QueryProjectionFieldType.cs" />
-    <Compile Include="QueryResultSet.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NSharding.Sharding.DomainModel\NSharding.DomainModel.Spi.csproj">
+    <ProjectReference Include="..\Src\NSharding.DataAccess.Spi\NSharding.DataAccess.Spi.csproj">
+      <Project>{259A1DBE-386C-43C7-8892-AA37E9C40E66}</Project>
+      <Name>NSharding.DataAccess.Spi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Src\NSharding.Sharding.DomainModel\NSharding.DomainModel.Spi.csproj">
       <Project>{A2BDEF5E-1909-48D7-981C-366BE37F9F84}</Project>
       <Name>NSharding.DomainModel.Spi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NSharding.Sharding.Rule\NSharding.Sharding.Rule.csproj">
-      <Project>{619237B4-A625-4C81-83AC-86FA47F37EA3}</Project>
-      <Name>NSharding.Sharding.Rule</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
