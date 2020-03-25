@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.DomainModel.Annot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.ORMapping.Spi", "NSharding.ORMapping.Spi\NSharding.ORMapping.Spi.csproj", "{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSharding.ORMapping.Service", "NSharding.ORMapping.Service\NSharding.ORMapping.Service.csproj", "{40B154C8-B3D3-479F-82FB-0A1E28E69BD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6EF7A06-3A27-4F07-ADAE-9D022BB70E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B154C8-B3D3-479F-82FB-0A1E28E69BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B154C8-B3D3-479F-82FB-0A1E28E69BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B154C8-B3D3-479F-82FB-0A1E28E69BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B154C8-B3D3-479F-82FB-0A1E28E69BD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
