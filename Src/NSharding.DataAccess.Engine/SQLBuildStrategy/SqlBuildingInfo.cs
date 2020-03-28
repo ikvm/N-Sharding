@@ -33,7 +33,7 @@ namespace NSharding.DataAccess.Core
         /// <summary>
         /// 通用中间对象
         /// </summary>
-        public DomainModel.Spi.DomainModel CommonObject { get; set; }
+        public NSharding.DomainModel.Spi.DomainModel CommonObject { get; set; }
 
         /// <summary>
         /// 构造SQL的当前节点对象

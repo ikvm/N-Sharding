@@ -72,7 +72,7 @@ namespace NSharding.DataAccess.Core
             foreach (string dataItem in dataContext.Data.Keys)
             {
                 var updateElement = context.Node.Elements.FirstOrDefault(i => i.ID == dataItem);
-                var updateColumn = context.DataObject.Columns.FirstOrDefault(i => i.ID == updateElement.ID);
+                var updateColumn = context.DataObject.Columns.FirstOrDefault(i => i.ID == updateElement.DataColumnID);
 
                 //字段设置
                 var field = new UpdateField();
