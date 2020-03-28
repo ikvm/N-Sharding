@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Teld.Core.Metadata.Service;
 
-namespace NSharding.DataAccess.Service
+namespace NSharding.ORMapping.Service
 {
     /// <summary>
     /// 结果集映射工厂
     /// </summary>
-    class ResultMappingFactory
+    public class ResultMappingFactory
     {
         private static ConcurrentDictionary<string, ResultMapping> resultMappingDic;
 
@@ -54,7 +54,7 @@ namespace NSharding.DataAccess.Service
         /// </summary>        
         /// <param name="model">领域模型</param>
         /// <returns>结果集映射</returns>
-        public ResultMapping CreateOrGetResultMapping(DomainModel.Spi.DomainModel model)
+        public ResultMapping CreateOrGetResultMapping(NSharding.DomainModel.Spi.DomainModel model)
         {
             if (model == null)
                 throw new ArgumentNullException("ResultMappingFactory.CreateOrGetResultMapping.model");
@@ -95,7 +95,7 @@ namespace NSharding.DataAccess.Service
         /// </summary>
         /// <param name="model">领域对象</param>
         /// <returns>结果集映射</returns>
-        private ResultMapping CreateResultMapping(DomainModel.Spi.DomainModel model)
+        private ResultMapping CreateResultMapping(NSharding.DomainModel.Spi.DomainModel model)
         {
             if (model == null)
                 throw new ArgumentNullException("ResultMappingService.GetResultMapping.model");
@@ -103,11 +103,11 @@ namespace NSharding.DataAccess.Service
             DomainModelValidate(model);
 
             var rootObject = model.RootDomainObject;
-            var mapping = CreateDomainObjectMapping(model.Name, rootObject);
+            var mapping = CreateDomainObjectMapping(model.Name, model, rootObject);
 
             foreach (var domainObject in rootObject.ChildDomainObjects)
             {
-                LoopCreateResultMapping(rootObject, mapping, domainObject);
+                LoopCreateResultMapping(model, rootObject, mapping, domainObject);
             }
 
             return mapping;
@@ -119,21 +119,22 @@ namespace NSharding.DataAccess.Service
         /// <param name="parentObject">父对象</param>
         /// <param name="mapping">已有结果集映射</param>
         /// <param name="currentObject">当前对象</param>
-        private void LoopCreateResultMapping(DomainObject parentObject, ResultMapping mapping, DomainObject currentObject)
+        private void LoopCreateResultMapping(NSharding.DomainModel.Spi.DomainModel model, DomainObject parentObject, ResultMapping mapping, DomainObject currentObject)
         {
-            var subMapping = CreateDomainObjectMapping(currentObject.Name, currentObject);
+            var subMapping = CreateDomainObjectMapping(currentObject.Name, model, currentObject);
             var subMappingItem = new ResultMappingItem()
             {
-                Property = currentObject.PropertyName,
+                //Property = currentObject.PropertyName,
                 LazyLoad = currentObject.IsLazyLoad,
                 ResultMapping = subMapping,
-                ItemType = ResultMappingItemType.ResultMapping
+                ItemType = ResultMappingItemType.SubResultMapping
             };
             var innerAsso = parentObject.Associations.FirstOrDefault(
                 i => i.AssociateType == AssociateType.InnerJoin && i.AssoDomainObjectID == currentObject.ID);
             if (innerAsso != null)
             {
                 var parentElementID = innerAsso.Items.FirstOrDefault().SourceElementID;
+                subMappingItem.Property = innerAsso.PropertyName;
                 subMappingItem.GroupbyColumn = parentObject.DataObject.Columns.FirstOrDefault(c =>
                     c.ID == parentObject.Elements.FirstOrDefault(i => i.ID == parentElementID).DataColumnID).ColumnName;
             }
@@ -149,7 +150,7 @@ namespace NSharding.DataAccess.Service
                     Property = asso.PropertyName,
                     LazyLoad = asso.IsLazyLoad,
                     ResultMapping = assoMapping,
-                    ItemType = ResultMappingItemType.ResultMapping
+                    ItemType = ResultMappingItemType.ForeignResultMapping
                 });
             }
 
@@ -157,7 +158,7 @@ namespace NSharding.DataAccess.Service
             {
                 foreach (var obj in currentObject.ChildDomainObjects)
                 {
-                    LoopCreateResultMapping(currentObject, subMapping, obj);
+                    LoopCreateResultMapping(model, currentObject, subMapping, obj);
                 }
             }
         }
@@ -181,7 +182,7 @@ namespace NSharding.DataAccess.Service
         /// <param name="name">名称</param>
         /// <param name="domainObject">领域对象</param>
         /// <returns>结果集映射</returns>
-        private ResultMapping CreateDomainObjectMapping(string name, DomainObject domainObject)
+        private ResultMapping CreateDomainObjectMapping(string name, NSharding.DomainModel.Spi.DomainModel model, DomainObject domainObject)
         {
             var mapping = new ResultMapping()
             {
@@ -189,6 +190,7 @@ namespace NSharding.DataAccess.Service
                 ClassType = domainObject.ClazzReflectType
             };
 
+            //遍历对象自身的元素
             foreach (var element in domainObject.Elements)
             {
                 switch (element.ElementType)
@@ -205,64 +207,96 @@ namespace NSharding.DataAccess.Service
                         var enumItem = CreateEnumMappingItem(domainObject, element);
                         mapping.MappingItems.Add(enumItem);
                         break;
-                    //case ElementType.Association:
-                    //    var assoItem = CreateAssoMappingItem(domainObject, element);
-                    //    mapping.MappingItems.Add(assoItem);
-                    //    break;
                     default:
                         break;
                 }
             }
 
+            //主子关联
+            var childObjects = model.DomainObjects.Where(i => i.ParentObjectID == domainObject.ID);
+            if (childObjects.Count() > 0)
+            {
+                foreach (var child in childObjects)
+                {
+                    var asso = child.Associations.FirstOrDefault(i => i.AssociateType == AssociateType.InnerJoin && i.AssoDomainObjectID == domainObject.ID);
+                    var assoItem = CreateInnerAssoMapping(model, child, asso);
+                    mapping.MappingItems.Add(assoItem);
+                }
+            }
+
+            //外键关联 TODO
+            var leftAssociations = domainObject.Associations.Where(i => i.AssociateType == AssociateType.OuterLeftJoin && i.AssoDomainObjectID == domainObject.ID);
+            foreach (var asso in leftAssociations)
+            {
+                var assoMapping = CreateAssociationMapping(asso);
+                mapping.MappingItems.Add(new ResultMappingItem()
+                {
+                    Property = asso.PropertyName,
+                    LazyLoad = asso.IsLazyLoad,
+                    ResultMapping = assoMapping,
+                    ItemType = ResultMappingItemType.ForeignResultMapping
+                });
+            }
+
             return mapping;
         }
 
-        private ResultMappingItem CreateAssoMappingItem(DomainObject domainObject, DomainObjectElement element)
+        private ResultMappingItem CreateInnerAssoMapping(NSharding.DomainModel.Spi.DomainModel model, DomainObject currentDomainObject, Association association)
         {
             var item = new ResultMappingItem()
             {
-                Property = element.PropertyName,
-                ItemType = ResultMappingItemType.ResultMapping,
+                Property = association.PropertyName,
+                TypeHandler = association.PropertyType,
+                ItemType = ResultMappingItemType.SubResultMapping,
+                ResultMapping = CreateDomainObjectMapping(currentDomainObject.Name, model, currentDomainObject),
+                ParentDomainObjectId = currentDomainObject.ParentObjectID,
+                CurrentDomainObjectId = currentDomainObject.ID,
+                AssociationId = association.ID
             };
 
             return item;
         }
 
-        private ResultMappingItem CreateEnumMappingItem(DomainObject domainObject, DomainObjectElement element)
+        private ResultMappingItem CreateEnumMappingItem(NSharding.DomainModel.Spi.DomainObject domainObject, DomainObjectElement element)
         {
             var item = new ResultMappingItem()
             {
                 NullValue = element.DefaultValue,
                 Property = element.PropertyName,
                 ItemType = ResultMappingItemType.Enum,
-                Column = domainObject.DataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID).ColumnName,
-                TypeHandler = element.PropertyType
+                Column = element.Alias,
+                //Column = domainObject.DataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID).ColumnName,
+                TypeHandler = element.PropertyType,
+                ParentDomainObjectId = domainObject.ID
             };
 
             return item;
         }
 
-        private ResultMappingItem CreateVirtualMappingItem(DomainObject domainObject, DomainObjectElement element)
+        private ResultMappingItem CreateVirtualMappingItem(NSharding.DomainModel.Spi.DomainObject domainObject, DomainObjectElement element)
         {
             var item = new ResultMappingItem()
             {
                 NullValue = element.DefaultValue,
                 Property = element.PropertyName,
                 ItemType = ResultMappingItemType.Virtual,
-                Column = null
+                Column = element.Alias,
+                ParentDomainObjectId = domainObject.ID
             };
 
             return item;
         }
 
-        private ResultMappingItem CreateCommonMappingItem(DomainObject domainObject, DomainObjectElement element)
+        private ResultMappingItem CreateCommonMappingItem(NSharding.DomainModel.Spi.DomainObject domainObject, DomainObjectElement element)
         {
             var item = new ResultMappingItem()
             {
                 NullValue = element.DefaultValue,
                 Property = element.PropertyName,
                 ItemType = ResultMappingItemType.Normal,
-                Column = domainObject.DataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID).ColumnName
+                Column = element.Alias,
+                ParentDomainObjectId = domainObject.ID
+                //Column = domainObject.DataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID).ColumnName
             };
 
             return item;
@@ -272,7 +306,7 @@ namespace NSharding.DataAccess.Service
         /// 领域对象校验
         /// </summary>
         /// <param name="model">领域对象</param>
-        private void DomainModelValidate(DomainModel.Spi.DomainModel model)
+        private void DomainModelValidate(NSharding.DomainModel.Spi.DomainModel model)
         {
             foreach (var domainObject in model.DomainObjects)
             {

@@ -50,5 +50,11 @@ namespace NSharding.DomainModel.Spi
         /// 结果集映射项类型
         /// </summary>
         public ResultMappingItemType ItemType { get; set; }
+
+        public string ParentDomainObjectId { get; set; }
+
+        public string CurrentDomainObjectId { get; set; }
+
+        public string AssociationId { get; set; }
     }
 }

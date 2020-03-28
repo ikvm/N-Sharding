@@ -17,9 +17,14 @@ namespace NSharding.DomainModel.Spi
         Normal,
 
         /// <summary>
-        /// 关联
+        /// 子对象关联
         /// </summary>
-        ResultMapping,
+        SubResultMapping,
+
+        /// <summary>
+        /// 外部对象关联
+        /// </summary>
+        ForeignResultMapping,
 
         /// <summary>
         /// 枚举
