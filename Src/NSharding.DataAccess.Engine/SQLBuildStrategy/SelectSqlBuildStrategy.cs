@@ -39,6 +39,8 @@ namespace NSharding.DataAccess.Core
             BuildMainInnerJoin(selectStatement, context);
 
             sqls.Add(selectStatement);
+            sqls.ShardingInfo = context.RouteInfo;
+
             return sqls;
         }
 
@@ -219,7 +221,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="domainModel">通用中间对象</param>
         /// <param name="domainObject">当前节点</param>
         /// <param name="dataObject">当前节点对应的数据对象</param>
-        private void BuildMainFrom(SelectSqlStatement sql, DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, DataObject dataObject, string tableName, SqlBuildingContext sqlContext)
+        private void BuildMainFrom(SelectSqlStatement sql, DomainModel domainModel, DomainObject domainObject, DataObject dataObject, string tableName, SqlBuildingContext sqlContext)
         {
             //初始化主查询SQL语句
 
@@ -269,6 +271,7 @@ namespace NSharding.DataAccess.Core
                 var field = new SelectListField()
                 {
                     Table = sql.SqlBuildingInfo.CurrentSqlTable,
+                    IsUseAlias = true,
                     IsUseFieldPrefix = true,
                     FieldName = column.ColumnName,
                     FieldAlias = element.Alias
@@ -311,7 +314,7 @@ namespace NSharding.DataAccess.Core
             }
 
             //关联上的条件
-            leftJoin.AdditionalCondition = this.ParseCondition(association);            
+            leftJoin.AdditionalCondition = this.ParseCondition(association);
 
             sql.MainFromItem.ChildCollection.Add(leftJoin);
         }
@@ -364,8 +367,6 @@ namespace NSharding.DataAccess.Core
                 //        sql.FilterCondition.ChildCollection.Add = string.Format("{0} and ({1})", sql.FilterCondition.ConditionString, extendFilterCondition);
                 //}
 
-                // 获取前多少条数据。
-                sql.TopSize = context.PageSize;
             }
             else // 子节点情况
             {
@@ -381,11 +382,21 @@ namespace NSharding.DataAccess.Core
                 //// 解析模型上的过滤条件
                 //if (filterCondition != null)
                 //    sql.FilterCondition.ChildCollection.Add(filterCondition);
-                base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.RootNode, sql.SqlBuildingInfo.RootDataObject);
+                if (context.DataContext.MainDomainObject.IsRootObject)
+                    base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.RootNode, sql.SqlBuildingInfo.RootDataObject);
+                else
+                    base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.CurrentNode, sql.SqlBuildingInfo.CurrentDataObject);
 
                 // 解析排序条件
                 sql.OrderByCondition.ConditionString =
                                      base.ParseOrderByCondition(context.OrderByCondition, sql.SqlBuildingInfo);
+            }
+
+            // 分页设置
+            if (context.QueryFilter != null && context.QueryFilter.PageParameter != null)
+            {
+                sql.PageCount = context.QueryFilter.PageParameter.PageSize;
+                sql.PageIndex = context.QueryFilter.PageParameter.CurrentPageIndex;
             }
         }
     }

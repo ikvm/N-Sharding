@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NSharding.DataAccess.Spi;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,6 +28,13 @@ namespace NSharding.DataAccess.Core
                 return data;
             }
         }
+
+        public NSharding.DomainModel.Spi.DomainObject MainDomainObject { get; set; }
+
+        /// <summary>
+        /// 查询过滤条件
+        /// </summary>
+        public QueryFilter QueryFilter { get; set; }
 
         /// <summary>
         /// 获取当前数据上下文项
