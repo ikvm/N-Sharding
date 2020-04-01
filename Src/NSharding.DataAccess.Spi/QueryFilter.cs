@@ -14,9 +14,24 @@ namespace NSharding.DataAccess.Spi
     public class QueryFilter
     {
         /// <summary>
-        /// 查询条件
+        /// 过滤条件
         /// </summary>
-        public QueryCondition Condition { get; set; }
+        public List<FilterClause> FilterClauses { get; set; } = new List<FilterClause>();
+
+        /// <summary>
+        /// 排序条件
+        /// </summary>
+        public List<OrderByClause> OrderByCondition { get; set; } = new List<OrderByClause>();
+
+        /// <summary>
+        /// 分页信息
+        /// </summary>
+        public PageParameter PageParameter { get; set; }
+
+        /// <summary>
+        /// 限制数据返回行数
+        /// </summary>
+        public int LimitCount { get; set; }
 
         //查询投影字段
         private List<QueryProjectionField> projectionFields;
