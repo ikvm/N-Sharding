@@ -61,6 +61,8 @@
     <Compile Include="QueryProjectionField.cs" />
     <Compile Include="QueryProjectionFieldType.cs" />
     <Compile Include="QueryResultSet.cs" />
+    <Compile Include="RelationalOperator.cs" />
+    <Compile Include="RelationalOperatorUtis.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NSharding.Sharding.DomainModel\NSharding.DomainModel.Spi.csproj">
