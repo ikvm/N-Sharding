@@ -15,6 +15,7 @@ namespace NSharding.Sharding.Database
         SQLServer,
         MySQL,
         Other,
-        Oracle
+        Oracle,
+        ES
     }
 }
