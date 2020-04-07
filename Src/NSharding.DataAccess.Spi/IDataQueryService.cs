@@ -21,7 +21,15 @@ namespace NSharding.DataAccess.Spi
         /// <param name="dataID">数据唯一标识</param>
         /// <param name="shardingValue">分库分表键值对</param>
         /// <returns>对象数据</returns>
-        List<DataTable> GetData(DomainModel.Spi.DomainModel domainModel, string dataID, ShardingValue shardingValue = null);
+        QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, string dataID, ShardingValue shardingValue = null);
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="queryFilter">查询条件</param>        
+        /// <returns>查询结果</returns>
+        QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, QueryFilter queryFilter);
 
         /// <summary>
         /// 获取对象数据
@@ -31,6 +39,15 @@ namespace NSharding.DataAccess.Spi
         /// <param name="dataID">数据唯一标识</param>
         /// <param name="shardingValue">分库分表键值对</param>
         /// <returns>对象数据</returns>
-        List<DataTable> GetData(DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, string dataID, ShardingValue shardingValue = null);
+        QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, string dataID, ShardingValue shardingValue = null);
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="domainObject">领域对象</param>
+        /// <param name="queryFilter">查询条件</param>
+        /// <returns>对象数据</returns>
+        QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, QueryFilter queryFilter);
     }
 }

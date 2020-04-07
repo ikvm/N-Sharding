@@ -22,17 +22,19 @@ namespace NSharding.DataAccess.Core
         /// <param name="dataID">数据唯一标识</param>
         /// <param name="shardingValue">分库分表键值对</param>
         /// <returns>对象数据</returns>
-        public List<DataTable> GetData(DomainModel.Spi.DomainModel domainModel, string dataID, ShardingValue shardingValue = null)
+        public QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, string dataID, ShardingValue shardingValue = null)
         {
             if (domainModel == null)
                 throw new ArgumentNullException("DataQueryService.GetData.domainModel");
             if (string.IsNullOrWhiteSpace(dataID))
                 throw new ArgumentNullException("DataQueryService.GetData.dataID");
 
-            var sqls = SQLBuilderFactory.CreateSQLBuilder().ParseQuerySqlByID(domainModel, dataID, shardingValue);
+            var sqls = SQLBuilderFactory.CreateSQLBuilder(domainModel).ParseQuerySqlByID(domainModel, dataID, shardingValue);
 
-            var db = DatabaseFactory.CreateDefaultDatabase();
-            return db.GetDataCollection(sqls);
+            var db = DatabaseFactory.CreateDatabase(domainModel);
+            var dts = db.GetDataCollection(sqls);
+
+            return new QueryResultSet { ShardingInfo = sqls.ShardingInfo, DataTables = dts };
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="dataID">数据唯一标识</param>
         /// <param name="shardingValue">分库分表键值对</param>
         /// <returns>对象数据</returns>
-        public List<DataTable> GetData(DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, string dataID, ShardingValue shardingValue = null)
+        public QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, string dataID, ShardingValue shardingValue = null)
         {
             if (domainModel == null)
                 throw new ArgumentNullException("DataQueryService.GetData.domainModel");
@@ -52,10 +54,55 @@ namespace NSharding.DataAccess.Core
             if (string.IsNullOrWhiteSpace(dataID))
                 throw new ArgumentNullException("DataQueryService.GetData.dataID");
 
-            var sqls = SQLBuilderFactory.CreateSQLBuilder().ParseQuerySqlByID(domainModel, domainObject, dataID, shardingValue);
+            var sqls = SQLBuilderFactory.CreateSQLBuilder(domainModel).ParseQuerySqlByID(domainModel, domainObject, dataID, shardingValue);
 
-            var db = DatabaseFactory.CreateDefaultDatabase();
-            return db.GetDataCollection(sqls);
+            var db = DatabaseFactory.CreateDatabase(domainModel);
+            var dts = db.GetDataCollection(sqls);
+
+            return new QueryResultSet { ShardingInfo = sqls.ShardingInfo, DataTables = dts };
+        }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="queryFilter">查询条件</param>        
+        /// <returns>查询结果</returns>
+        public QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, QueryFilter queryFilter)
+        {
+            if (domainModel == null)
+                throw new ArgumentNullException("DataQueryService.GetData.domainModel");
+            if (queryFilter == null)
+                throw new ArgumentNullException("DataQueryService.GetData.queryFilter");
+
+            var sqls = SQLBuilderFactory.CreateSQLBuilder(domainModel).ParseQuerySqlByFilter(domainModel, queryFilter);
+
+            var db = DatabaseFactory.CreateDatabase(domainModel);
+            var dts = db.GetDataCollection(sqls);
+
+            return new QueryResultSet { ShardingInfo = sqls.ShardingInfo, DataTables = dts };
+        }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="domainObject">领域对象</param>
+        /// <param name="queryFilter">查询条件</param>        
+        /// <returns>查询结果</returns>
+        public QueryResultSet GetData(NSharding.DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, QueryFilter queryFilter)
+        {
+            if (domainModel == null)
+                throw new ArgumentNullException("DataQueryService.GetData.domainModel");
+            if (queryFilter == null)
+                throw new ArgumentNullException("DataQueryService.GetData.queryFilter");
+
+            var sqls = SQLBuilderFactory.CreateSQLBuilder(domainModel).ParseQuerySqlByFilter(domainModel, domainObject, queryFilter);
+
+            var db = DatabaseFactory.CreateDatabase(domainModel);
+            var dts = db.GetDataCollection(sqls);
+
+            return new QueryResultSet { ShardingInfo = sqls.ShardingInfo, DataTables = dts };
         }
     }
 }
