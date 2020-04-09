@@ -1,4 +1,5 @@
 ﻿using NSharding.DataAccess.Spi;
+using NSharding.DomainModel.Spi;
 using NSharding.Sharding.Database;
 using NSharding.Sharding.Rule;
 using System;
@@ -22,6 +23,7 @@ namespace NSharding.DataAccess.Core
             DataObject = dataObject;
             DbType = DbType.SQLServer;
             PrimaryKeyDataCollection = new List<Dictionary<string, object>>();
+            this.DbType = dataObject.DataSource.DbType;
         }
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace NSharding.DataAccess.Core
             this.CurrentPageIndex = pageIndex;
             this.FilterCondition = filterCondition;
             this.OrderByCondition = orderByCondition;
+            this.DbType = dataObject.DataSource.DbType;
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="domainModel">领域模型</param>
         /// <param name="domainObject">领域对象</param>
         /// <param name="dbType">数据库类型</param>
-        public SqlBuildingContext(DomainModel.Spi.DomainModel domainModel, DomainModel.Spi.DomainObject domainObject, DbType dbType)
+        public SqlBuildingContext(DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, DbType dbType)
         {
             this.DbType = dbType;
             this.Node = domainObject;
@@ -59,10 +62,12 @@ namespace NSharding.DataAccess.Core
         /// <param name="domainObject">领域对象</param>
         /// <param name="dbType">数据库类型</param>
         /// <param name="dataContext">数据上下文</param>
-        public SqlBuildingContext(DomainModel.Spi.DomainModel domainModel, DomainModel.Spi.DomainObject domainObject, DbType dbType, DataContext dataContext)
+        public SqlBuildingContext(DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, DbType dbType, DataContext dataContext)
             : this(domainModel, domainObject, dbType)
         {
             this.DataContext = dataContext;
+            this.QueryFilter = dataContext.QueryFilter;
+            this.DbType = domainObject.DataObject.DataSource.DbType;
         }
 
         /// <summary>
@@ -73,11 +78,12 @@ namespace NSharding.DataAccess.Core
         /// <param name="dbType">数据库类型</param>                
         /// <param name="filterCondition">过滤条件</param>
         /// <param name="orderByCondition">排序条件</param>        
-        public SqlBuildingContext(DomainModel.Spi.DomainModel domainModel, DomainModel.Spi.DomainObject domainObject, DbType dbType, string filterCondition = "", string orderByCondition = "")
+        public SqlBuildingContext(DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, DbType dbType, string filterCondition = "", string orderByCondition = "")
             : this(domainModel, domainObject, dbType)
         {
             FilterCondition = filterCondition;
             OrderByCondition = orderByCondition;
+            this.DbType = domainObject.DataObject.DataSource.DbType;
         }
 
         #endregion
@@ -92,7 +98,7 @@ namespace NSharding.DataAccess.Core
         /// <summary>
         /// 领域对象
         /// </summary>
-        public DomainModel.Spi.DomainObject Node { get; set; }
+        public DomainObject Node { get; set; }
 
         /// <summary>
         /// 数据对象
@@ -265,7 +271,7 @@ namespace NSharding.DataAccess.Core
         /// <summary>
         /// 过滤条件实体类
         /// </summary>
-        public QueryFilter DataFilters { get; set; }
+        public QueryFilter QueryFilter { get; set; }
 
         #endregion
     }

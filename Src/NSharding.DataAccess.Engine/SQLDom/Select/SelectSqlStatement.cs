@@ -149,6 +149,10 @@ namespace NSharding.DataAccess.Core
             }
         }
 
+        public int PageCount { get; set; }
+
+        public int PageIndex { get; set; }
+
         /// <summary>
         /// 如果使用字段别名，那么此属性表示映射后的顺序号
         /// </summary>
