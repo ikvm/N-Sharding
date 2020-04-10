@@ -43,8 +43,10 @@
     <Compile Include="DataAccessOpType.cs" />
     <Compile Include="DbDataType.cs" />
     <Compile Include="FieldType.cs" />
+    <Compile Include="FieldValueType.cs" />
     <Compile Include="FilterClause.cs" />
     <Compile Include="FilterField.cs" />
+    <Compile Include="FilterFieldValue.cs" />
     <Compile Include="IDataAccess.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDataDeleteService.cs" />
