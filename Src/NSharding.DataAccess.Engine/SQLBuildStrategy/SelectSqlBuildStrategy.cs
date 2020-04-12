@@ -221,7 +221,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="domainModel">通用中间对象</param>
         /// <param name="domainObject">当前节点</param>
         /// <param name="dataObject">当前节点对应的数据对象</param>
-        private void BuildMainFrom(SelectSqlStatement sql, DomainModel domainModel, DomainObject domainObject, DataObject dataObject, string tableName, SqlBuildingContext sqlContext)
+        private void BuildMainFrom(SelectSqlStatement sql, DomainModel.Spi.DomainModel domainModel, DomainObject domainObject, DataObject dataObject, string tableName, SqlBuildingContext sqlContext)
         {
             //初始化主查询SQL语句
 

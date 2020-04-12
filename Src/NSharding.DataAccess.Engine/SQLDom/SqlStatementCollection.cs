@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NSharding.Sharding.Rule;
 
 namespace NSharding.DataAccess.Core
 {
@@ -48,6 +49,8 @@ namespace NSharding.DataAccess.Core
         #endregion
 
         #region 属性
+
+        public Dictionary<string, ShardingTarget> ShardingInfo { get; set; }
 
         #endregion
 
