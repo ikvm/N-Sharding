@@ -29,6 +29,10 @@ namespace NSharding.DataAccess.Core
                             return new SelectSqlStaForMSS();
                         case DbType.Oracle:
                             return new SelectSqlStaForORA();
+                        //case DbType.ES:
+                        //    return new SelectSqlStaForES();
+                        case DbType.MySQL:
+                            return new SelectSqlStaForMySQL();
                         default:
                             return new SelectSqlStatement();
                     }
@@ -40,6 +44,8 @@ namespace NSharding.DataAccess.Core
                                 return new InsertSqlStaMSS();
                             case DbType.Oracle:
                                 return new InsertSqlStaORA();
+                            case DbType.MySQL:
+                                return new InsertSqlStaMySQL();
                             default:
                                 return new InsertSqlStaMSS();
                         }
@@ -53,6 +59,8 @@ namespace NSharding.DataAccess.Core
                             return new UpdateSqlStaForMSS();
                         case DbType.Oracle:
                             return new UpdateSqlStaForORA();
+                        case DbType.MySQL:
+                            return new UpdateSqlStaForMySQL();
                         default:
                             return new UpdateSqlStatement();
                     }

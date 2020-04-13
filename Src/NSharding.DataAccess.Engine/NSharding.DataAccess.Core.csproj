@@ -107,6 +107,9 @@
     <Compile Include="SQLDom\Join\JoinConditionItem.cs" />
     <Compile Include="SQLDom\Join\JoinConditionStatement.cs" />
     <Compile Include="SQLDom\Join\LeftJoinItem.cs" />
+    <Compile Include="SQLDom\MySQL\InsertSqlStatementMySQL.cs" />
+    <Compile Include="SQLDom\MySQL\SelectSqlStaForMySQL.cs" />
+    <Compile Include="SQLDom\MySQL\UpdateSqlStaForMySQL.cs" />
     <Compile Include="SQLDom\OperatorType.cs" />
     <Compile Include="SQLDom\Or.cs" />
     <Compile Include="SQLDom\Oracle\InsertSqlStatementORA.cs" />
@@ -163,5 +166,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
