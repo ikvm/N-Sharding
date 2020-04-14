@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NSharding.DataAccess.Spi;
+using System;
 
 namespace NSharding.DataAccess.Core
 {
@@ -34,20 +35,34 @@ namespace NSharding.DataAccess.Core
 
         #region 属性
 
-        public OperatorType relationOperator = OperatorType.And;
+        private OperatorType logicalOperator = OperatorType.And;
 
         /// <summary>
         /// 关系运算符
         /// </summary>
-        public OperatorType RelationOperator
+        public OperatorType LogicalOperator
         {
             get
             {
-                return relationOperator;
+                return logicalOperator;
             }
             set
             {
-                relationOperator = value;
+                logicalOperator = value;
+            }
+        }
+
+        public void SetRelationOperator(LogicalOperator loperator)
+        {
+            switch (loperator)
+            {
+                case Spi.LogicalOperator.OR:
+                    LogicalOperator = OperatorType.Or;
+                    break;
+                case Spi.LogicalOperator.AND:
+                default:
+                    LogicalOperator = OperatorType.And;
+                    break;
             }
         }
 

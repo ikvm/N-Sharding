@@ -53,6 +53,25 @@ namespace NSharding.Sharding.Database
         }
 
         /// <summary>
+        /// 是否数字类型
+        /// </summary>
+        public bool IsNumeric
+        {
+            get
+            {
+                switch (DataTypeID.ToLower())
+                {
+                    case "int":
+                        return true;
+                    case "decimal":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        /// <summary>
         /// 长度
         /// </summary>
         public int Length { get; set; }

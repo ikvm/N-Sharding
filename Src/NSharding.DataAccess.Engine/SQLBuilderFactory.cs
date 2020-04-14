@@ -23,8 +23,8 @@ namespace NSharding.DataAccess.Core
 
             switch (mainDbType)
             {
-                case DbType.ES:
-                    return new ESSQLBuilder();
+                //case DbType.ES:
+                //    return new ESSQLBuilder();
                 case DbType.SQLServer:
                 case DbType.MySQL:
                 case DbType.Oracle:

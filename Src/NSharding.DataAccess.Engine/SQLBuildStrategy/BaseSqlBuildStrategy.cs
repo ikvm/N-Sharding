@@ -1,4 +1,5 @@
-﻿using NSharding.Sharding.Database;
+﻿using NSharding.DomainModel.Spi;
+using NSharding.Sharding.Database;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="dataObject">数据对象</param>
         /// <param name="currentDbTable">当前操作对应的数据库表</param>
         /// <returns>SQL构造中间变量</returns>
-        protected SqlBuildingInfo InitSqlBuildingInfo(DomainModel.Spi.DomainModel commonObject, DomainModel.Spi.DomainObject coNode, DataObject dataObject, string tableName, string dataSourceName)
+        protected SqlBuildingInfo InitSqlBuildingInfo(DomainModel.Spi.DomainModel commonObject, DomainObject coNode, DataObject dataObject, string tableName, string dataSourceName)
         {
             //构造SqlBuildingInfo
             var sqlInfo = new SqlBuildingInfo();
@@ -105,7 +106,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="dataObject">数据对象</param>
         /// <param name="currentDbTable">当前操作对应的数据库表</param>
         /// <returns>SQL构造中间变量</returns>
-        protected SqlBuildingInfo InitSqlBuildingInfoForSelect(DomainModel.Spi.DomainModel commonObject, DomainModel.Spi.DomainObject coNode, DataObject dataObject, string tableName)
+        protected SqlBuildingInfo InitSqlBuildingInfoForSelect(DomainModel.Spi.DomainModel commonObject, DomainObject coNode, DataObject dataObject, string tableName)
         {
             var sqlInfo = new SqlBuildingInfo()
             {
@@ -221,7 +222,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="IsUseFieldPrefix">是否使用表名</param>       
         /// <returns>主键的过滤条件。</returns>
         protected string GetPrimaryKeyCondition(SqlBuildingContext context, SqlBuildingInfo sqlInfo,
-            DomainModel.Spi.DomainObject coNode, bool IsUseFieldPrefix = false)
+            DomainObject coNode, bool IsUseFieldPrefix = false)
         {
             var tableName = context.TableName;
             var tableKey = tableName;
@@ -257,7 +258,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="dataObject">主键过滤条件对应的GSPDataTable。</param>
         /// <param name="sqlInfo">SQL拼装的中间变量。</param>
         /// <returns>解析后的过滤条件。</returns>
-        protected void GetSelectSqlCondition(SelectSqlStatement sql, SqlBuildingContext context, DomainModel.Spi.DomainObject currentObject, DataObject dataObject)
+        protected void GetSelectSqlCondition(SelectSqlStatement sql, SqlBuildingContext context, DomainObject currentObject, DataObject dataObject)
         {
             //若是非主键形式条件定义。
             if (context.IsUseCondition)
@@ -286,7 +287,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="dataObject">主键过滤条件对应的GSPDataTable。</param>
         /// <param name="sqlInfo">SQL拼装的中间变量。</param>
         /// <returns>解析后的过滤条件。</returns>
-        protected void GetUpdateSqlCondition(UpdateSqlStatement sql, SqlBuildingContext context, DomainModel.Spi.DomainObject currentObject, DataObject dataObject)
+        protected void GetUpdateSqlCondition(UpdateSqlStatement sql, SqlBuildingContext context, DomainObject currentObject, DataObject dataObject)
         {
             //若是非主键形式条件定义。
             if (context.IsUseCondition)
@@ -398,7 +399,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="curDataObject">数据对象</param>
         /// <param name="sqlInfo">SQL拼装的中间变量。</param>
         /// <returns>主键的过滤条件。</returns>
-        private SqlPrimaryKey GetPrimaryKeyCondition(SqlBuildingContext context, DomainModel.Spi.DomainObject domainObject, DataObject curDataObject, SqlBuildingInfo sqlInfo)
+        private SqlPrimaryKey GetPrimaryKeyCondition(SqlBuildingContext context, DomainObject domainObject, DataObject curDataObject, SqlBuildingInfo sqlInfo)
         {
             var tableName = context.DataObjectTableMapping[curDataObject.ID];
             SqlTable curTable = this.FindSqlTable(tableName, sqlInfo);
@@ -409,6 +410,8 @@ namespace NSharding.DataAccess.Core
             }
 
             var data = context.DataContext.GetCurrentDataContextItem(domainObject.ID);
+            if (data.PrimaryKeyData.Count == 0) return null;
+
             var primaryKey = new SqlPrimaryKey();
             foreach (var column in curDataObject.PKColumns)
             {
@@ -433,7 +436,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="IsUseFieldPrefix">是否使用列全名。</param>
         /// <returns>主键过滤条件</returns>
         protected SqlPrimaryKey GetPrimaryKeyConditions(SqlBuildingContext context, SqlBuildingInfo sqlInfo,
-            DomainModel.Spi.DomainObject currentObject, IDictionary<string, object> data, bool IsUseFieldPrefix = false)
+            DomainObject currentObject, IDictionary<string, object> data, bool IsUseFieldPrefix = false)
         {
             var curDataObject = currentObject.DataObject;
             var tableName = context.DataObjectTableMapping[curDataObject.ID];
@@ -468,7 +471,7 @@ namespace NSharding.DataAccess.Core
         /// <param name="IsUseFieldPrefix">是否使用列全名。</param>
         /// <returns>主键过滤条件</returns>
         protected FilterConditionStatement GetPrimaryKeyConditionsEx(SqlBuildingContext context, SqlBuildingInfo sqlInfo,
-            DomainModel.Spi.DomainObject currentObject, IDictionary<string, object> pkColumnData, bool IsUseFieldPrefix = false)
+            DomainObject currentObject, IDictionary<string, object> pkColumnData, bool IsUseFieldPrefix = false)
         {
             var conditionItem = new FilterConditionStatement();
             foreach (KeyValuePair<string, object> pkdata in pkColumnData)
@@ -489,7 +492,7 @@ namespace NSharding.DataAccess.Core
                         keyCondition.Field.Table = sqlTable;
                     }
                     keyCondition.Value = Convert.ToString(pkdata.Value);
-                    keyCondition.RelationOperator = OperatorType.And;
+                    keyCondition.LogicalOperator = OperatorType.And;
                     conditionItem.ChildCollection.Add(keyCondition);
                 }
                 else
@@ -503,7 +506,7 @@ namespace NSharding.DataAccess.Core
                         keyCondition.Field.Table = sqlTable;
                     }
                     keyCondition.Value = Convert.ToInt64(pkdata.Value);
-                    keyCondition.RelationOperator = OperatorType.And;
+                    keyCondition.LogicalOperator = OperatorType.And;
                     conditionItem.ChildCollection.Add(keyCondition);
                 }
             }
@@ -524,6 +527,18 @@ namespace NSharding.DataAccess.Core
         internal string ParseOrderByCondition(string orderByCondition, SqlBuildingInfo sqlBuildingInfo)
         {
             return orderByCondition;
+        }
+
+        internal FilterConditionStatement ParseFilterCondition(SqlBuildingContext context)
+        {
+            return ConditionStatementParser.ParseFiletrClauses(context.QueryFilter.FilterClauses,
+                context.Node, context.DataObject);
+        }
+
+        internal ConditionStatement ParseOrderByCondition(SqlBuildingContext context)
+        {
+            return ConditionStatementParser.ParseOrderByClauses(context.QueryFilter.OrderByCondition,
+               context.Node, context.DataObject);
         }
     }
 }

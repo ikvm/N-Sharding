@@ -95,13 +95,7 @@ namespace NSharding.DataAccess.Core
         /// <summary>
         /// 字段是否使用别名
         /// </summary>
-        public bool IsUseAlias 
-        {
-            get
-            {
-                return isUseAlias;
-            }
-        }
+        public bool IsUseAlias { get; set; }
 
         /// <summary>
         /// 字段是否动态（根据条件构建出来的字段）

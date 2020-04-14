@@ -46,7 +46,7 @@ namespace NSharding.DataAccess.Core
                     }
                     else
                     {
-                        if (subCondition.RelationOperator == OperatorType.And)
+                        if (subCondition.LogicalOperator == OperatorType.And)
                         {
                             condition.Append(And.Clause(subCondition.ToSQL()));
                         }

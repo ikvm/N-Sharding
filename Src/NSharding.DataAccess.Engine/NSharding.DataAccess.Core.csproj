@@ -87,6 +87,7 @@
     <Compile Include="SQLBuildStrategy\SqlBuildingInfo.cs" />
     <Compile Include="SQLBuildStrategy\UpdateSqlBuildStrategy.cs" />
     <Compile Include="SQLDom\And.cs" />
+    <Compile Include="SQLDom\ConditionStatementParser.cs" />
     <Compile Include="SQLDom\Delete\DeleteSqlStatement.cs" />
     <Compile Include="SQLDom\Field.cs" />
     <Compile Include="SQLDom\FieldValue.cs" />
