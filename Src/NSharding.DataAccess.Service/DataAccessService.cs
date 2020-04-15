@@ -496,6 +496,38 @@ namespace NSharding.DataAccess.Service
 
         #endregion
 
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="domainObject">领域对象</param>
+        /// <param name="queryFilter">查询条件</param>        
+        /// <returns>对象数据</returns>
+        public List<DataTable> GetData(string domainModelID, string domainObjectID, QueryFilter queryFilter)
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetData.domainModelID");
+            if (string.IsNullOrWhiteSpace(domainObjectID))
+                throw new ArgumentNullException("DataAccessService.GetData.domainObjectID");
+            if (queryFilter == null)
+                throw new ArgumentNullException("DataAccessService.GetData.queryFilter");
 
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+                var domainObject = domainModel.DomainObjects.FirstOrDefault(i => i.ID == domainObjectID);
+                if (domainObject == null)
+                    throw new Exception("Dae-0001: Cannot find DomainObject: " + domainObjectID);
+
+                return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, queryFilter).DataTables;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
+        }
     }
 }
