@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NSharding.ORMapping.Service
 {
-    // <summary>
+    /// <summary>
     /// 对象组装器
     /// </summary>
     public class ORMDefaultImpl : IORMPlugin
@@ -24,12 +24,48 @@ namespace NSharding.ORMapping.Service
         public ORMDefaultImpl()
         {
             resultMappingService = new ResultMappingService();
-        }   
+        }
 
-        public object MapToObject(QueryResultSet resultSet, NSharding.DomainModel.Spi.DomainModel model, DomainObject domainObject)
+        //public object MaptoObject(IDataReader reader, DomainModel model)
+        //{
+        //    var obj = ORMAssemblyContainer.GetInstance().CreateInstance(model.RootDomainObject.ClazzReflectType);
+        //    var type = ORMAssemblyContainer.GetInstance().GetObjectType(model.RootDomainObject.ClazzReflectType);
+        //    var props = type.GetProperties();
+        //    var resultMapping = resultMappingService.GetResultMapping(model);
+
+        //    while (reader.Read())
+        //    {
+        //        foreach (var item in resultMapping.MappingItems)
+        //        {
+        //            switch (item.ItemType)
+        //            {
+        //                case ResultMappingItemType.Normal:
+        //                    MappingCommonProperty(reader, obj, props, item);
+        //                    break;
+        //                case ResultMappingItemType.Enum:
+        //                    var element = model.RootDomainObject.Elements.FirstOrDefault(i => i.PropertyName == item.Property);
+        //                    MappingEnumProperty(reader, obj, props, item, element.PropertyType);
+        //                    break;
+        //                case ResultMappingItemType.Virtual:
+        //                    var virtualElement = model.RootDomainObject.Elements.FirstOrDefault(i => i.PropertyName == item.Property);
+        //                    MappingVirtualProperty(virtualElement, obj, props, item);
+        //                    break;
+        //                case ResultMappingItemType.SubResultMapping:
+        //                    var asso = model.RootDomainObject.Associations.FirstOrDefault(i => i.PropertyName == item.Property);
+        //                    MappingComplexProperty(reader, obj, props, item, asso);
+        //                    break;
+        //                default:
+        //                    break;
+        //            }
+
+        //        }
+        //    }
+
+        //    return obj;
+        //}      
+
+        public object MapToObject(QueryResultSet resultSet, DomainModel.Spi.DomainModel model, DomainObject domainObject)
         {
-
-
             if (domainObject == null)
                 domainObject = model.RootDomainObject;
 
@@ -39,8 +75,9 @@ namespace NSharding.ORMapping.Service
             var resultMapping = resultMappingService.GetResultMapping(model);
 
             var dataTable = resultSet.GetDataTable(domainObject.DataObjectID);
-            var firstRow = dataTable.Rows[0];
+            if (dataTable.Rows.Count == 0) return null;
 
+            var firstRow = dataTable.Rows[0];
             var mappingItems = new List<ResultMappingItem>();
             if (domainObject.IsRootObject)
             {
@@ -103,7 +140,7 @@ namespace NSharding.ORMapping.Service
             return obj;
         }
 
-        public List<object> MapToObjects(QueryResultSet resultSet, NSharding.DomainModel.Spi.DomainModel model, DomainObject domainObject)
+        public List<object> MapToObjects(QueryResultSet resultSet, DomainModel.Spi.DomainModel model, DomainObject domainObject)
         {
             if (domainObject == null)
                 domainObject = model.RootDomainObject;
@@ -185,7 +222,7 @@ namespace NSharding.ORMapping.Service
             return result;
         }
 
-        public object GetForeignObjects(DataRow row, NSharding.DomainModel.Spi.DomainModel model, ResultMappingItem mappingItem, DomainObject domainObject, Association forAssociation)
+        public object GetForeignObjects(DataRow row, DomainModel.Spi.DomainModel model, ResultMappingItem mappingItem, DomainObject domainObject, Association forAssociation)
         {
             var type = ORMAssemblyContainer.GetInstance().GetObjectType(forAssociation.AssoDomainObject.ClazzReflectType);
             var obj = ORMAssemblyContainer.GetInstance().CreateInstance(forAssociation.AssoDomainObject.ClazzReflectType);
@@ -206,7 +243,7 @@ namespace NSharding.ORMapping.Service
             return obj;
         }
 
-        public List<object> GetSubObjects(QueryResultSet resultSet, NSharding.DomainModel.Spi.DomainModel model, DomainObject domainObject, ResultMappingItem mappingItem)
+        public List<object> GetSubObjects(QueryResultSet resultSet, DomainModel.Spi.DomainModel model, DomainObject domainObject, ResultMappingItem mappingItem)
         {
             var result = new List<object>();
             var type = ORMAssemblyContainer.GetInstance().GetObjectType(domainObject.ClazzReflectType);
@@ -344,7 +381,18 @@ namespace NSharding.ORMapping.Service
                 if (prop == null)
                     throw new ArgumentNullException("Prop:" + item.Property);
                 if (row[item.Column] != DBNull.Value)
-                    prop.SetValue(obj, row[item.Column]);
+                {
+                    var realValue = row[item.Column];
+                    if (prop.PropertyType == typeof(Boolean))
+                    {
+                        if (row[item.Column].GetType() == typeof(int))
+                        {
+                            realValue = Convert.ToBoolean(Convert.ToInt32(realValue));
+                        }
+                    }
+
+                    prop.SetValue(obj, realValue);
+                }
             }
             catch (Exception e)
             {
