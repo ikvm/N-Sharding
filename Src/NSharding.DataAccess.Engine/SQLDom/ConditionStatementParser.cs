@@ -104,7 +104,7 @@ namespace NSharding.DataAccess.Core
             return filterConditionStatement;
         }
 
-        public static string ParseFilterClause(FilterClause filterClause, NSharding.DomainModel.Spi.DomainObject domainObject, DataObject dataObject)
+        public static string ParseFilterClause(FilterClause filterClause, DomainObject domainObject, DataObject dataObject)
         {
             var fieldType = filterClause.FilterField.FieldType;
             DataColumn column = null;
@@ -134,12 +134,12 @@ namespace NSharding.DataAccess.Core
                 {
                     if (relationOper.Value)
                     {
-                        return string.Format("{0}{1}{2}", element.Alias, relationOper.Key,
+                        return string.Format("{0} {1} {2}", element.Alias, relationOper.Key,
                             filterClause.FilterFieldValue.FiledValue);
                     }
                     else
                     {
-                        return string.Format("{0}{1}", element.Alias, relationOper.Key,
+                        return string.Format(element.Alias + " " + relationOper.Key,
                            filterClause.FilterFieldValue.FiledValue);
                     }
                 }
@@ -154,12 +154,12 @@ namespace NSharding.DataAccess.Core
                 {
                     if (relationOper.Value)
                     {
-                        return string.Format("{0}{1}'{2}'", element.Alias, relationOper.Key,
+                        return string.Format("{0} {1}'{2}'", element.Alias, relationOper.Key,
                             filterClause.FilterFieldValue.FiledValue);
                     }
                     else
                     {
-                        return string.Format("{0}{1}", element.Alias, relationOper.Key,
+                        return string.Format(element.Alias + " " + relationOper.Key,
                            filterClause.FilterFieldValue.FiledValue);
                     }
                 }
