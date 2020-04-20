@@ -36,6 +36,7 @@ namespace NSharding.DataAccess.Core
             var condition = new StringBuilder(ChildCollection.Count * 56);
             for (int i = 0; i < ChildCollection.Count; i++)
             {
+                if (ChildCollection[i] == null) continue;
                 if (ChildCollection[i] is ConditionStatement)
                 {
                     var subCondition = ChildCollection[i] as ConditionStatement;

@@ -531,14 +531,24 @@ namespace NSharding.DataAccess.Core
 
         internal FilterConditionStatement ParseFilterCondition(SqlBuildingContext context)
         {
-            return ConditionStatementParser.ParseFiletrClauses(context.QueryFilter.FilterClauses,
-                context.Node, context.DataObject);
+            if (context.QueryFilter != null)
+            {
+                return ConditionStatementParser.ParseFiletrClauses(context.QueryFilter.FilterClauses,
+                    context.Node, context.DataObject);
+            }
+
+            return null;
         }
 
         internal ConditionStatement ParseOrderByCondition(SqlBuildingContext context)
         {
-            return ConditionStatementParser.ParseOrderByClauses(context.QueryFilter.OrderByCondition,
-               context.Node, context.DataObject);
+            if (context.QueryFilter != null)
+            {
+                return ConditionStatementParser.ParseOrderByClauses(context.QueryFilter.OrderByCondition,
+                   context.Node, context.DataObject);
+            }
+
+            return null;
         }
     }
 }

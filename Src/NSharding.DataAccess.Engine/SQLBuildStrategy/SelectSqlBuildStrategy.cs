@@ -347,26 +347,21 @@ namespace NSharding.DataAccess.Core
                 // 解析外部传入的过滤条件（表单、帮助、报表等）,注:只处理主对象上的过滤条件。         
                 base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.RootNode, sql.SqlBuildingInfo.RootDataObject);
 
-                //// 解析模型上的过滤条件
-                //if (filterCondition != null)
-                //{
-                //    sql.FilterCondition.ChildCollection.Add(filterCondition);
-                //}
+                // 解析过滤条件
+                var fiterCondition = base.ParseFilterCondition(context);
+                if (fiterCondition != null)
+                {
+                    sql.FilterCondition.ChildCollection.Add(fiterCondition);
+                }
 
                 // 解析排序条件
-                sql.OrderByCondition.ConditionString =
-                    base.ParseOrderByCondition(context.OrderByCondition, sql.SqlBuildingInfo);
+                sql.OrderByCondition = base.ParseOrderByCondition(context);
 
-                //解析额外的过滤条件
-                //string extendFilterCondition = ParseExtendFilterCondition(sql.SqlBuildingInfo, context);
-                //if (string.IsNullOrEmpty(extendFilterCondition) == false)
-                //{
-                //    if (string.IsNullOrWhiteSpace(sql.FilterCondition.ConditionString))
-                //        sql.FilterCondition.ConditionString = extendFilterCondition;
-                //    else
-                //        sql.FilterCondition.ChildCollection.Add = string.Format("{0} and ({1})", sql.FilterCondition.ConditionString, extendFilterCondition);
-                //}
-
+                // 获取前多少条数据。
+                if (context.QueryFilter != null && context.QueryFilter.LimitCount > 0)
+                {
+                    sql.TopSize = context.QueryFilter.LimitCount;
+                }
             }
             else // 子节点情况
             {

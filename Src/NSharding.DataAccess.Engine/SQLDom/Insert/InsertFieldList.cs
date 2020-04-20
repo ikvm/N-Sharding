@@ -58,7 +58,8 @@ namespace NSharding.DataAccess.Core
             values.Append("(");
             for (int index = 0; index < this.ChildCollection.Count; index++)
             {
-                result.Append("\"").Append(ChildCollection[index].ToSQL()).Append("\"");
+                result.Append(ChildCollection[index].ToSQL());
+                //result.Append("\"").Append(ChildCollection[index].ToSQL()).Append("\"");
                 if (index < this.ChildCollection.Count - 1)
                     result.Append(",");
 
