@@ -237,12 +237,15 @@ namespace NSharding.DataAccess.Core
             if (context.Data.ContainsKey(domainObject.ID))
             {
                 var dataContextItem = context.GetCurrentDataContextItem(domainObject.ID);
-                foreach (var column in dataObject.PKColumns)
+                if (dataContextItem.PrimaryKeyData.Count > 0)
                 {
-                    var pkField = new SqlPrimaryKeyField(sql.SqlBuildingInfo.CurrentSqlTable, column.ColumnName);
-                    var pkElement = domainObject.Elements.FirstOrDefault(i => i.DataColumnID == column.ID);
-                    pkField.Value.Value = dataContextItem.PrimaryKeyData[pkElement.ID];
-                    sql.PrimaryKeys.ChildCollection.Add(pkField);
+                    foreach (var column in dataObject.PKColumns)
+                    {
+                        var pkField = new SqlPrimaryKeyField(sql.SqlBuildingInfo.CurrentSqlTable, column.ColumnName);
+                        var pkElement = domainObject.Elements.FirstOrDefault(i => i.DataColumnID == column.ID);
+                        pkField.Value.Value = dataContextItem.PrimaryKeyData[pkElement.ID];
+                        sql.PrimaryKeys.ChildCollection.Add(pkField);
+                    }
                 }
             }
 

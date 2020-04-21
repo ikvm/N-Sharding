@@ -106,7 +106,10 @@ namespace NSharding.DomainModel.Spi
             get
             {
                 var modelObjects = new List<DomainObject>();
+                if (this.RootDomainObject == null)
+                    return modelObjects;
                 modelObjects.Add(this.RootDomainObject);
+
                 foreach (var childObject in this.RootDomainObject.ChildDomainObjects)
                 {
                     modelObjects.Add(childObject);
