@@ -79,7 +79,7 @@ namespace NSharding.DataAccess.Core
             Dictionary<string, ShardingTarget> routeInfo)
         {
             var insertStrategy = new InsertSqlBuildStrategy();
-            var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType());
+            var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType);
             context.RouteInfo = routeInfo;
 
             var nodeSqlSchemata = insertStrategy.BuildTableSqlSchema(context);
@@ -138,7 +138,7 @@ namespace NSharding.DataAccess.Core
             for (int i = 0; i < dataContext.Data[domainObject.ID].Count; i++)
             {
                 dataContext.CurrentDataIndex = i;
-                var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType(), dataContext);
+                var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType, dataContext);
                 context.RouteInfo = routeInfo;
 
                 var rowSqls = new SqlStatementCollection();
@@ -224,7 +224,7 @@ namespace NSharding.DataAccess.Core
             Dictionary<string, ShardingTarget> routeInfo, DataContext dataContext)
         {
             var updateStrategy = new UpdateSqlBuildStrategy();
-            var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType());
+            var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType);
             context.RouteInfo = routeInfo;
             if (dataContext.GetCurrentDataContextItem(domainObject.ID) != null)
             {
@@ -289,7 +289,7 @@ namespace NSharding.DataAccess.Core
             for (int i = 0; i < dataContext.Data[domainObject.ID].Count; i++)
             {
                 dataContext.CurrentDataIndex = i;
-                var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType(), dataContext);
+                var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType, dataContext);
                 context.RouteInfo = routeInfo;
 
                 var rowSqls = new SqlStatementCollection();
@@ -334,7 +334,7 @@ namespace NSharding.DataAccess.Core
         {
             //构造SQL语句的条件
             var strategy = new SelectSqlBuildStrategy();
-            var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType(), dataContext);
+            var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType, dataContext);
             context.RouteInfo = routeInfo;
             var rowSqls = new SqlStatementCollection();
             var sqls = sqlSchemata.Where(s => s.SqlBuildingInfo.CurrentNode.ID == domainObject.ID).ToList();
@@ -358,7 +358,7 @@ namespace NSharding.DataAccess.Core
         private void ParseQuerySqlSchema(SqlStatementCollection sqlSchemata, DomainModel.Spi.DomainModel domainModel, DomainModel.Spi.DomainObject domainObject, Dictionary<string, ShardingTarget> routeInfo, DataContext dataContext)
         {
             var selectStrategy = new SelectSqlBuildStrategy();
-            var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType(), dataContext);
+            var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType, dataContext);
             context.RouteInfo = routeInfo;
 
             var nodeSqlSchemata = selectStrategy.BuildTableSqlSchema(context);
@@ -521,7 +521,7 @@ namespace NSharding.DataAccess.Core
         private void ParseDeleteSqlSchema(SqlStatementCollection sqlSchemata, DomainModel.Spi.DomainModel domainModel, DomainModel.Spi.DomainObject domainObject, Dictionary<string, ShardingTarget> routeInfo, DataContext dataContext)
         {
             var selectStrategy = new DeleteSqlBuildStrategy();
-            var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType(), dataContext);
+            var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType, dataContext);
             context.RouteInfo = routeInfo;
 
             var nodeSqlSchemata = selectStrategy.BuildTableSqlSchema(context);
@@ -541,7 +541,7 @@ namespace NSharding.DataAccess.Core
         {
             //构造SQL语句的条件
             var strategy = new DeleteSqlBuildStrategy();
-            var context = new SqlBuildingContext(domainModel, domainObject, SQLBuilderUtils.GetCurrentDbType(), dataContext);
+            var context = new SqlBuildingContext(domainModel, domainObject, domainObject.DataObject.DataSource.DbType, dataContext);
             context.RouteInfo = routeInfo;
             var rowSqls = new SqlStatementCollection();
             var sqls = sqlSchemata.Where(s => s.SqlBuildingInfo.CurrentNode.ID == domainObject.ID).ToList();
