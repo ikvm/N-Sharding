@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObjectPropertyValueUtils.cs" />
+    <Compile Include="ORMappingService.cs" />
     <Compile Include="ORMAssemblyContainer.cs" />
     <Compile Include="ORMDefaultImpl.cs" />
     <Compile Include="ORMPluginFactory.cs" />

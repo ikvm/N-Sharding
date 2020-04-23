@@ -1,4 +1,6 @@
 ﻿using NSharding.DataAccess.Core;
+using NSharding.DataAccess.Spi;
+using NSharding.ORMapping.Service;
 using NSharding.Sharding.Rule;
 using System;
 using System.Collections.Generic;
@@ -523,6 +525,43 @@ namespace NSharding.DataAccess.Service
                     throw new Exception("Dae-0001: Cannot find DomainObject: " + domainObjectID);
 
                 return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, queryFilter).DataTables;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
+        }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="dataID">数据唯一标识</param>
+        /// <param name="shardingValue">分库分表键值对</param>
+        /// <returns>对象数据</returns>
+        public T GetObject<T>(string domainModelID, string dataId, ShardingValue shardingValue = null,
+            Func<QueryResultSet, DomainModel.Spi.DomainModel, DomainModel.Spi.DomainObject, T> ormappingFunc = null)
+            where T : class
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetObject.domainModelID");
+            if (string.IsNullOrWhiteSpace(dataId))
+                throw new ArgumentNullException("DataAccessService.GetObject.dataId");
+
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+
+                var resultSet = DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, dataId, shardingValue);
+
+                if (ormappingFunc != null)
+                    return ormappingFunc(resultSet, domainModel, domainModel.RootDomainObject);
+
+                return ORMappingService.MapToObject<T>(resultSet, domainModel);
             }
             catch (Exception e)
             {
