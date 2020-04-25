@@ -431,7 +431,159 @@ namespace NSharding.DataAccess.Service
             {
                 throw new Exception("Dae-Delete-002: 数据批量删除失败!", e);
             }
+        }       
+
+        #endregion        
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="dataID">数据唯一标识</param>
+        /// <param name="shardingValue">分库分表键值对</param>
+        /// <returns>对象数据</returns>
+        public T GetObject<T>(string domainModelID, string dataId, ShardingValue shardingValue = null,
+            Func<QueryResultSet, DomainModel.Spi.DomainModel, DomainModel.Spi.DomainObject, T> ormappingFunc = null)
+            where T : class
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetObject.domainModelID");
+            if (string.IsNullOrWhiteSpace(dataId))
+                throw new ArgumentNullException("DataAccessService.GetObject.dataId");
+
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+
+                var resultSet = DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, dataId, shardingValue);
+
+                if (ormappingFunc != null)
+                    return ormappingFunc(resultSet, domainModel, domainModel.RootDomainObject);
+
+                return ORMappingService.MapToObject<T>(resultSet, domainModel);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
         }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="dataID">数据唯一标识</param>
+        /// <param name="shardingValue">分库分表键值对</param>
+        /// <returns>对象数据</returns>
+        public List<T> GetObjects<T>(string domainModelID, QueryFilter queryFilter,
+            Func<QueryResultSet, DomainModel.Spi.DomainModel, DomainModel.Spi.DomainObject, List<T>> ormappingFunc = null)
+            where T : class
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetObjects.domainModelID");
+            if (queryFilter == null)
+                throw new ArgumentNullException("DataAccessService.GetObjects.queryFilter");
+
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+
+                var resultSet = DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, queryFilter);
+
+                if (ormappingFunc != null)
+                    return ormappingFunc(resultSet, domainModel, domainModel.RootDomainObject);
+
+                return ORMappingService.MapToObjects<T>(resultSet, domainModel);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
+        }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="domainObject">领域对象</param>
+        /// <param name="dataID">数据唯一标识</param>
+        /// <param name="shardingValue">分库分表键值对</param>
+        /// <returns>对象数据</returns>
+        public T GetObject<T>(string domainModelID, string domainObjectID, string dataId, ShardingValue shardingValue = null,
+            Func<QueryResultSet, DomainModel.Spi.DomainModel, DomainModel.Spi.DomainObject, T> ormappingFunc = null)
+            where T : class
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetObject.domainModelID");
+            if (string.IsNullOrWhiteSpace(dataId))
+                throw new ArgumentNullException("DataAccessService.GetObject.dataId");
+
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+                var domainObject = domainModel.DomainObjects.FirstOrDefault(i => i.ID == domainObjectID);
+                var resultSet = DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, dataId, shardingValue);
+                if (ormappingFunc != null)
+                    return ormappingFunc(resultSet, domainModel, domainObject);
+
+                return ORMappingService.MapToObject<T>(resultSet, domainModel, domainObject);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
+        }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
+        /// <param name="domainObject">领域对象</param>
+        /// <param name="dataID">数据唯一标识</param>
+        /// <param name="shardingValue">分库分表键值对</param>
+        /// <returns>对象数据</returns>
+        public List<T> GetObjects<T>(string domainModelID, string domainObjectID, QueryFilter queryFilter,
+            Func<QueryResultSet, DomainModel.Spi.DomainModel, DomainModel.Spi.DomainObject, List<T>> ormappingFunc = null)
+            where T : class
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetObjects.domainModelID");
+            if (queryFilter == null)
+                throw new ArgumentNullException("DataAccessService.GetObjects.queryFilter");
+
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+                var domainObject = domainModel.DomainObjects.FirstOrDefault(i => i.ID == domainObjectID);
+                var resultSet = DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, queryFilter);
+
+                if (ormappingFunc != null)
+                    return ormappingFunc(resultSet, domainModel, domainObject);
+
+                return ORMappingService.MapToObjects<T>(resultSet, domainModel, domainObject);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
+        }
+      
 
         /// <summary>
         /// 获取对象数据
@@ -440,12 +592,12 @@ namespace NSharding.DataAccess.Service
         /// <param name="dataId">数据唯一标识</param>
         /// <param name="shardingValue">分库分表键值对</param>
         /// <returns>对象数据</returns>
-        public List<DataTable> GetData(string domainModelID, string dataId, ShardingValue shardingValue = null)
+        public List<DataTable> GetData(string domainModelID, QueryFilter queryFilter)
         {
             if (string.IsNullOrWhiteSpace(domainModelID))
                 throw new ArgumentNullException("DataAccessService.GetData.domainModelID");
-            if (string.IsNullOrWhiteSpace(dataId))
-                throw new ArgumentNullException("DataAccessService.GetData.dataId");
+            if (queryFilter == null)
+                throw new ArgumentNullException("DataAccessService.GetData.queryFilter");
 
             try
             {
@@ -453,7 +605,7 @@ namespace NSharding.DataAccess.Service
                 if (domainModel == null)
                     throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
 
-                return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, dataId, shardingValue);
+                return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, queryFilter).DataTables;
             }
             catch (Exception e)
             {
@@ -488,15 +640,13 @@ namespace NSharding.DataAccess.Service
                 if (domainObject == null)
                     throw new Exception("Dae-0001: Cannot find DomainObject: " + domainObjectID);
 
-                return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, dataId, shardingValue);
+                return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, dataId, shardingValue).DataTables;
             }
             catch (Exception e)
             {
                 throw new Exception("Dae-Query-001: 数据查询失败!", e);
             }
         }
-
-        #endregion
 
         /// <summary>
         /// 获取对象数据
@@ -525,43 +675,6 @@ namespace NSharding.DataAccess.Service
                     throw new Exception("Dae-0001: Cannot find DomainObject: " + domainObjectID);
 
                 return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, domainObject, queryFilter).DataTables;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Dae-Query-001: 数据查询失败!", e);
-            }
-        }
-
-        /// <summary>
-        /// 获取对象数据
-        /// </summary>        
-        /// <param name="domainModel">领域模型</param>
-        /// <param name="dataID">数据唯一标识</param>
-        /// <param name="shardingValue">分库分表键值对</param>
-        /// <returns>对象数据</returns>
-        public T GetObject<T>(string domainModelID, string dataId, ShardingValue shardingValue = null,
-            Func<QueryResultSet, DomainModel.Spi.DomainModel, DomainModel.Spi.DomainObject, T> ormappingFunc = null)
-            where T : class
-        {
-            if (string.IsNullOrWhiteSpace(domainModelID))
-                throw new ArgumentNullException("DataAccessService.GetObject.domainModelID");
-            if (string.IsNullOrWhiteSpace(dataId))
-                throw new ArgumentNullException("DataAccessService.GetObject.dataId");
-
-            try
-            {
-                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
-
-                if (domainModel == null)
-                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
-
-
-                var resultSet = DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, dataId, shardingValue);
-
-                if (ormappingFunc != null)
-                    return ormappingFunc(resultSet, domainModel, domainModel.RootDomainObject);
-
-                return ORMappingService.MapToObject<T>(resultSet, domainModel);
             }
             catch (Exception e)
             {
