@@ -52,7 +52,7 @@
     <Compile Include="DomainModelUnitTest.cs" />
     <Compile Include="OrderAssert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataSourceTest.cs" />
+    <Compile Include="DataSourceUnitTest.cs" />
     <Compile Include="SalesOrderDetail.cs" />
     <Compile Include="SalesOrders.cs" />
     <Compile Include="ShardingRuleUnitTest.cs" />
