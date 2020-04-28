@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DomainModelAssert.cs" />
     <Compile Include="DomainModelUnitTest.cs" />
+    <Compile Include="MySQLDataAccessUnitTest.cs" />
     <Compile Include="OrderAssert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataSourceUnitTest.cs" />
@@ -67,6 +68,10 @@
     <ProjectReference Include="..\NSharding.DataAccess.Service\NSharding.DataAccess.Service.csproj">
       <Project>{3688B905-957C-4E04-9108-501425A17B72}</Project>
       <Name>NSharding.DataAccess.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NSharding.DataAccess.Spi\NSharding.DataAccess.Spi.csproj">
+      <Project>{259A1DBE-386C-43C7-8892-AA37E9C40E66}</Project>
+      <Name>NSharding.DataAccess.Spi</Name>
     </ProjectReference>
     <ProjectReference Include="..\NSharding.DomainModel.Manager\NSharding.DomainModel.Manager.csproj">
       <Project>{28017DC1-3E97-4E97-9A39-9CA857E425C7}</Project>

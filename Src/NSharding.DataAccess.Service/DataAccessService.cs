@@ -617,6 +617,34 @@ namespace NSharding.DataAccess.Service
         /// 获取对象数据
         /// </summary>        
         /// <param name="domainModel">领域模型</param>
+        /// <param name="dataId">数据唯一标识</param>
+        /// <param name="shardingValue">分库分表键值对</param>
+        /// <returns>对象数据</returns>
+        public List<DataTable> GetData(string domainModelID, string dataId, ShardingValue shardingValue = null)
+        {
+            if (string.IsNullOrWhiteSpace(domainModelID))
+                throw new ArgumentNullException("DataAccessService.GetData.domainModelID");
+            if (string.IsNullOrWhiteSpace(dataId))
+                throw new ArgumentNullException("DataAccessService.GetData.dataId");
+
+            try
+            {
+                var domainModel = DomainModelManageService.GetInstance().GetDomainModel(domainModelID);
+                if (domainModel == null)
+                    throw new Exception("Dae-0001: Cannot find DomainModel: " + domainModelID);
+
+                return DataAccessEngine.GetInstance().GetDataQueryService().GetData(domainModel, dataId, shardingValue).DataTables;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Dae-Query-001: 数据查询失败!", e);
+            }
+        }
+
+        /// <summary>
+        /// 获取对象数据
+        /// </summary>        
+        /// <param name="domainModel">领域模型</param>
         /// <param name="domainObject">领域对象</param>
         /// <param name="dataId">数据唯一标识</param>
         /// <param name="shardingValue">分库分表键值对</param>
