@@ -122,5 +122,53 @@ namespace NSharding.UnitTest
                 manager.DeleteDataSource(dataSource.Name);
             }
         }
+
+        [TestMethod]        
+        public void MySQLDataSourceTest()
+        {
+            var dataSource = new DataSource()
+            {
+                Name = "MYSQL",
+                DbType = DbType.MySQL,
+                IsSharding = true,
+                Description = "MYSQL"
+            };
+
+            var dbLink = new DatabaseLink()
+            {
+                Name = "MYSQL",
+                ConnectionString = "MYSQL",
+                DataSourceName = "MYSQL",
+                DataSource = dataSource
+            };
+
+            dataSource.DbLinks.Add(dbLink);
+
+            var manager = new DataSourceManager();
+
+            try
+            {
+                manager.DeleteDataSource(dataSource.Name);
+                manager.SaveDataSource(dataSource);
+
+                var dataSourceQuery = manager.GetDataSource(dataSource.Name);
+                Assert.IsNotNull(dataSourceQuery);
+                Assert.AreEqual(dataSource.IsSharding, dataSourceQuery.IsSharding);
+                Assert.AreEqual(dataSource.Description, dataSourceQuery.Description);
+                Assert.AreEqual(dataSource.DbType, dataSourceQuery.DbType);
+
+                Assert.AreEqual(dataSource.DbLinks.Count, dataSourceQuery.DbLinks.Count);
+
+                var dblink0 = dataSourceQuery.DbLinks.FirstOrDefault(i => i.Name == dataSource.DbLinks[0].Name);
+                Assert.AreEqual(dataSource.DbLinks[0].Name, dblink0.Name);
+                Assert.AreEqual(dataSource.DbLinks[0].IsDefault, dblink0.IsDefault);
+                Assert.AreEqual(dataSource.DbLinks[0].DataSourceName, dblink0.DataSourceName);
+                Assert.AreEqual(dataSource.DbLinks[0].Tables.Count, dblink0.Tables.Count);
+            }
+            finally
+            {
+                //manager.DeleteDataSource(dataSource.Name);
+            }
+        }
     }
 }
