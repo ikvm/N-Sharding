@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModelAssert.cs" />
+    <Compile Include="DomainModelBuilder.cs" />
     <Compile Include="DomainModelUnitTest.cs" />
     <Compile Include="MySQLDataAccessUnitTest.cs" />
     <Compile Include="OrderAssert.cs" />
