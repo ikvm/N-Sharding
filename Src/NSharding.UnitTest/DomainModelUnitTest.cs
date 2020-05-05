@@ -7,8 +7,21 @@ namespace NSharding.UnitTest
     public class DomainModelUnitTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void DomainModelCRUDTest()
         {
+            var dataObject = DomainModelBuilder.CreateDataObject();
+            var domainModel = DomainModelBuilder.CreateDomainModel();
+
+            var dataObjectManager = new NSharding.DomainModel.Manager.DataObjectManager();
+            dataObjectManager.DeleteDataObject(dataObject.ID);
+            dataObjectManager.SaveDataObject(dataObject);
+
+            var domainModelManager = new NSharding.DomainModel.Manager.DomainModelManager();
+            domainModelManager.DeleteDomainModel(domainModel.ID);
+            domainModelManager.SaveDomainModel(domainModel);
+
+            var queryModel = domainModelManager.GetDomainModel(domainModel.ID);
+            DomainModelAssert.AssertModel(domainModel, queryModel);
         }
     }
 }

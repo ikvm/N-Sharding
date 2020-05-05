@@ -11,10 +11,10 @@ namespace NSharding.UnitTest
     class DomainModelBuilder
     {
         /// <summary>
-        /// 充电订单数据对象
+        /// 销售订单数据对象
         /// </summary>
         /// <returns>充电订单数据对象</returns>
-        public DataObject CreateCM_ChargeBillDataObject()
+        public static DataObject CreateDataObject()
         {
             var dataObject = new DataObject
             {
@@ -73,32 +73,149 @@ namespace NSharding.UnitTest
                     ID = "SalesOrders_ID",
                     Alias = "ID",
                     Name = "ID",
-                    DataColumnID = "ID",
+                    DataColumnID = "SalesOrder_ID",
                     IsAllowNull = false,
                     ElementType = ElementType.Normal,
                     DataType = ElementDataType.String,
                     DomainObjectID = modelObject.ID,
                     Length = 36,
                     PropertyName = "ID",
-                    PropertyType = "System.String",
-                    IsForQuery = true
+                    PropertyType = "System.String"
                 }
                 );
             modelObject.Elements.Add(
               new DomainObjectElement()
-              {
+               {
                   ID = "SalesOrders_Code",
                   Alias = "Code",
                   Name = "Code",
-                  DataColumnID = "Code",
+                  DataColumnID = "SalesOrder_Code",
                   IsAllowNull = false,
                   ElementType = ElementType.Normal,
                   DataType = ElementDataType.String,
                   DomainObjectID = modelObject.ID,
                   Length = 36,
-                  PropertyName = "ID",
+                  PropertyName = "Code",
+                  PropertyType = "System.String"
+               }
+              );
+
+            modelObject.Elements.Add(
+            new DomainObjectElement()
+            {
+                ID = "SalesOrders_Description",
+                Alias = "Description",
+                Name = "Description",
+                DataColumnID = "SalesOrder_Description",
+                IsAllowNull = false,
+                ElementType = ElementType.Normal,
+                DataType = ElementDataType.String,
+                DomainObjectID = modelObject.ID,
+                Length = 36,
+                PropertyName = "Description",
+                PropertyType = "System.String"
+            }
+            );
+
+            modelObject.Elements.Add(
+               new DomainObjectElement()
+               {
+                   ID = "SalesOrders_Price",
+                   Alias = "Price",
+                   Name = "Price",
+                   DataColumnID = "SalesOrder_Price",
+                   IsAllowNull = false,
+                   ElementType = ElementType.Normal,
+                   DataType = ElementDataType.Decimal,
+                   DomainObjectID = modelObject.ID,
+                   Length = 36,
+                   PropertyName = "Price",
+                   PropertyType = "System.Decimal"
+               }
+           );
+
+            modelObject.Elements.Add(
+             new DomainObjectElement()
+             {
+                 ID = "SalesOrders_Tax",
+                 Alias = "Tax",
+                 Name = "Tax",
+                 DataColumnID = "SalesOrder_Tax",
+                 IsAllowNull = false,
+                 ElementType = ElementType.Normal,
+                 DataType = ElementDataType.Decimal,
+                 DomainObjectID = modelObject.ID,
+                 Length = 36,
+                 PropertyName = "Tax",
+                 PropertyType = "System.Decimal"
+             }
+           );
+
+            modelObject.Elements.Add(
+               new DomainObjectElement()
+               {
+                   ID = "SalesOrders_Customer",
+                   Alias = "Customer",
+                   Name = "Customer",
+                   DataColumnID = "SalesOrder_Customer",
+                   IsAllowNull = false,
+                   ElementType = ElementType.Normal,
+                   DataType = ElementDataType.String,
+                   DomainObjectID = modelObject.ID,
+                   Length = 36,
+                   PropertyName = "Customer",
+                   PropertyType = "System.String",
+               }
+               );
+
+            modelObject.Elements.Add(
+              new DomainObjectElement()
+              {
+                  ID = "SalesOrders_CreateTime",
+                  Alias = "CreateTime",
+                  Name = "CreateTime",
+                  DataColumnID = "SalesOrder_CreateTime",
+                  IsAllowNull = false,
+                  ElementType = ElementType.Normal,
+                  DataType = ElementDataType.DateTime,
+                  DomainObjectID = modelObject.ID,
+                  Length = 36,
+                  PropertyName = "CreateTime",
+                  PropertyType = "System.DateTime",                  
+               }
+              );
+
+            modelObject.Elements.Add(
+               new DomainObjectElement()
+               {
+                   ID = "SalesOrders_AccountingTime",
+                   Alias = "AccountingTime",
+                   Name = "AccountingTime",
+                   DataColumnID = "SalesOrder_AccountingTime",
+                   IsAllowNull = false,
+                   ElementType = ElementType.Normal,
+                   DataType = ElementDataType.DateTime,
+                   DomainObjectID = modelObject.ID,
+                   Length = 36,
+                   PropertyName = "AccountingTime",
+                   PropertyType = "System.DateTime",
+               }
+               );
+
+            modelObject.Elements.Add(
+              new DomainObjectElement()
+              {
+                  ID = "SalesOrders_AdjustReason",
+                  Alias = "AdjustReason",
+                  Name = "AdjustReason",
+                  DataColumnID = "SalesOrder_AdjustReason",
+                  IsAllowNull = false,
+                  ElementType = ElementType.Normal,
+                  DataType = ElementDataType.String,
+                  DomainObjectID = modelObject.ID,
+                  Length = 36,
+                  PropertyName = "AdjustReason",
                   PropertyType = "System.String",
-                  IsForQuery = true
               }
               );
 
