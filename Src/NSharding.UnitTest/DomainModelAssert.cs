@@ -9,8 +9,11 @@ namespace NSharding.UnitTest
 {
     class DomainModelAssert
     {
-        public static void AssertModel(DomainModel.Spi.DomainModel expected, DomainModel.Spi.DomainModel actual)
+        public static void AreEqual(DomainModel.Spi.DomainModel expected, DomainModel.Spi.DomainModel actual)
         {
+            Assert.IsNotNull(expected);
+            Assert.IsNotNull(actual);
+
             Assert.AreEqual(expected.CacheStrategy, actual.CacheStrategy);
             Assert.AreEqual(expected.IsCache, actual.IsCache);
             Assert.AreEqual(expected.Name, actual.Name);

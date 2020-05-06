@@ -21,7 +21,21 @@ namespace NSharding.UnitTest
             domainModelManager.SaveDomainModel(domainModel);
 
             var queryModel = domainModelManager.GetDomainModel(domainModel.ID);
-            DomainModelAssert.AssertModel(domainModel, queryModel);
+            DomainModelAssert.AreEqual(domainModel, queryModel);
+        }
+
+        [TestMethod]
+        public void DomainObjectCRUDTest()
+        {
+            var dataObject = DomainModelBuilder.CreateDataObject();
+          
+            var dataObjectManager = new NSharding.DomainModel.Manager.DataObjectManager();
+            dataObjectManager.DeleteDataObject(dataObject.ID);
+            dataObjectManager.SaveDataObject(dataObject);
+
+            var queryDataObject = dataObjectManager.GetDataObject(dataObject.ID);
+
+            DataObjectAssert.AreEqual(dataObject, queryDataObject);
         }
     }
 }
