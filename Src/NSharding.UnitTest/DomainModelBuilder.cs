@@ -24,20 +24,24 @@ namespace NSharding.UnitTest
                 DataSourceName = "SD",
                 IsTableSharding = false,
                 IsView = false,
-                Version = 1
+                Version = 1,
+                CreateTime = DateTime.Now,
+                Creator = "Test",
+                LastModifier = "Test",
+                LastModifyTime = DateTime.Now
             };
 
             #region Columns
 
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_ID", ColumnName = "ID", DisplayName = "ID", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = false, IsPkColumn = true, Length = 36 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Code", ColumnName = "Code", DisplayName = "Code", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = false, IsPkColumn = false, Length = 36 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Description", ColumnName = "Description", DisplayName = "Description", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = true, IsPkColumn = false, Length = 36 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Price", ColumnName = "Price", DisplayName = "Price", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "decimal" }, IsNullable = true, IsPkColumn = false, Length = 9, Precision = 2 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Tax", ColumnName = "Tax", DisplayName = "Tax", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "decimal" }, IsNullable = true, IsPkColumn = false, Length = 9, Precision = 2 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Customer", ColumnName = "Customer", DisplayName = "Customer", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = true, IsPkColumn = false, Length = 36 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_CreateTime", ColumnName = "CreateTime", DisplayName = "CreateTime", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "datetime" }, IsNullable = true, IsPkColumn = false, Length = 8 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_AdjustReason", ColumnName = "AdjustReason", DisplayName = "AdjustReason", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = true, IsPkColumn = false, Length = 128 });
-            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_AccountingTime", ColumnName = "AccountingTime", DisplayName = "AccountingTime", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "datetime" }, IsNullable = true, IsPkColumn = false, Length = 8 });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_ID", ColumnName = "ID", DisplayName = "ID", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = false, IsPkColumn = true, Length = 36, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime=DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Code", ColumnName = "Code", DisplayName = "Code", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = false, IsPkColumn = false, Length = 36, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Description", ColumnName = "Description", DisplayName = "Description", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = true, IsPkColumn = false, Length = 36, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Price", ColumnName = "Price", DisplayName = "Price", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "decimal" }, IsNullable = true, IsPkColumn = false, Length = 9, Precision = 2, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Tax", ColumnName = "Tax", DisplayName = "Tax", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "decimal" }, IsNullable = true, IsPkColumn = false, Length = 9, Precision = 2, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_Customer", ColumnName = "Customer", DisplayName = "Customer", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = true, IsPkColumn = false, Length = 36, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_CreateTime", ColumnName = "CreateTime", DisplayName = "CreateTime", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "datetime" }, IsNullable = true, IsPkColumn = false, Length = 8, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_AdjustReason", ColumnName = "AdjustReason", DisplayName = "AdjustReason", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "varchar" }, IsNullable = true, IsPkColumn = false, Length = 128, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
+            dataObject.Columns.Add(new DataColumn() { ID = "SalesOrder_AccountingTime", ColumnName = "AccountingTime", DisplayName = "AccountingTime", DataObjectID = dataObject.ID, DataType = new DataType() { ID = "datetime" }, IsNullable = true, IsPkColumn = false, Length = 8, Creator = "Test", LastModifier = "Test", CreateTime = DateTime.Now, LastModifyTime = DateTime.Now });
 
             #endregion
 
@@ -53,7 +57,11 @@ namespace NSharding.UnitTest
                 CacheStrategy = "1",
                 IsCache = true,
                 IsLogicDelete = false,
-                Version = 1
+                Version = 1,
+                CreateTime = DateTime.Now,
+                Creator = "Test",
+                LastModifier = "Test",
+                LastModifyTime = DateTime.Now
             };
 
             var modelObject = new DomainObject()
@@ -80,7 +88,11 @@ namespace NSharding.UnitTest
                     DomainObjectID = modelObject.ID,
                     Length = 36,
                     PropertyName = "ID",
-                    PropertyType = "System.String"
+                    PropertyType = "System.String",
+                    CreateTime = DateTime.Now,
+                    Creator = "Test",
+                    LastModifier = "Test",
+                    LastModifyTime = DateTime.Now
                 }
                 );
             modelObject.Elements.Add(
@@ -96,8 +108,12 @@ namespace NSharding.UnitTest
                   DomainObjectID = modelObject.ID,
                   Length = 36,
                   PropertyName = "Code",
-                  PropertyType = "System.String"
-               }
+                  PropertyType = "System.String",
+                  CreateTime = DateTime.Now,
+                  Creator = "Test",
+                  LastModifier = "Test",
+                  LastModifyTime = DateTime.Now
+              }
               );
 
             modelObject.Elements.Add(
@@ -113,7 +129,11 @@ namespace NSharding.UnitTest
                 DomainObjectID = modelObject.ID,
                 Length = 36,
                 PropertyName = "Description",
-                PropertyType = "System.String"
+                PropertyType = "System.String",
+                CreateTime = DateTime.Now,
+                Creator = "Test",
+                LastModifier = "Test",
+                LastModifyTime = DateTime.Now
             }
             );
 
@@ -130,7 +150,11 @@ namespace NSharding.UnitTest
                    DomainObjectID = modelObject.ID,
                    Length = 36,
                    PropertyName = "Price",
-                   PropertyType = "System.Decimal"
+                   PropertyType = "System.Decimal",
+                   CreateTime = DateTime.Now,
+                   Creator = "Test",
+                   LastModifier = "Test",
+                   LastModifyTime = DateTime.Now
                }
            );
 
@@ -147,7 +171,11 @@ namespace NSharding.UnitTest
                  DomainObjectID = modelObject.ID,
                  Length = 36,
                  PropertyName = "Tax",
-                 PropertyType = "System.Decimal"
+                 PropertyType = "System.Decimal",
+                 CreateTime = DateTime.Now,
+                 Creator = "Test",
+                 LastModifier = "Test",
+                 LastModifyTime = DateTime.Now
              }
            );
 
@@ -164,7 +192,11 @@ namespace NSharding.UnitTest
                    DomainObjectID = modelObject.ID,
                    Length = 36,
                    PropertyName = "Customer",
-                   PropertyType = "System.String",
+                   PropertyType = "System.String",                   
+                   CreateTime = DateTime.Now,
+                   Creator = "Test",
+                   LastModifier = "Test",
+                   LastModifyTime = DateTime.Now
                }
                );
 
@@ -181,8 +213,12 @@ namespace NSharding.UnitTest
                   DomainObjectID = modelObject.ID,
                   Length = 36,
                   PropertyName = "CreateTime",
-                  PropertyType = "System.DateTime",                  
-               }
+                  PropertyType = "System.DateTime",
+                  CreateTime = DateTime.Now,
+                  Creator = "Test",
+                  LastModifier = "Test",
+                  LastModifyTime = DateTime.Now
+              }
               );
 
             modelObject.Elements.Add(
@@ -199,6 +235,10 @@ namespace NSharding.UnitTest
                    Length = 36,
                    PropertyName = "AccountingTime",
                    PropertyType = "System.DateTime",
+                   CreateTime = DateTime.Now,
+                   Creator = "Test",
+                   LastModifier = "Test",
+                   LastModifyTime = DateTime.Now
                }
                );
 
@@ -216,6 +256,10 @@ namespace NSharding.UnitTest
                   Length = 36,
                   PropertyName = "AdjustReason",
                   PropertyType = "System.String",
+                  CreateTime = DateTime.Now,
+                  Creator = "Test",
+                  LastModifier = "Test",
+                  LastModifyTime = DateTime.Now
               }
               );
 

@@ -1,6 +1,7 @@
 ﻿using NSharding.Sharding.Rule;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,7 @@ namespace NSharding.Sharding.Database
         /// <summary>
         /// 主键列集合
         /// </summary>
+        [NotMapped]
         public List<DataColumn> PKColumns
         {
             get
@@ -63,6 +65,7 @@ namespace NSharding.Sharding.Database
         /// <summary>
         /// 分区列
         /// </summary>
+        [NotMapped]
         public DataColumn ShardingColumn
         {
             get
@@ -79,6 +82,7 @@ namespace NSharding.Sharding.Database
         /// <summary>
         /// 数据源
         /// </summary>
+        [NotMapped]
         public DataSource DataSource { get; set; }
 
         /// <summary>
@@ -117,6 +121,7 @@ namespace NSharding.Sharding.Database
         /// <summary>
         /// 表分区策略
         /// </summary>
+        [NotMapped]
         public TableShardingStrategy TableShardingStrategy
         {
             get
@@ -149,6 +154,7 @@ namespace NSharding.Sharding.Database
         /// <summary>
         /// 数据库分库策略
         /// </summary>
+        [NotMapped]
         public DatabaseShardingStrategy DatabaseShardingStrategy
         {
             get

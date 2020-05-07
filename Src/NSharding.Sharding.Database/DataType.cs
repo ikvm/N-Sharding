@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace NSharding.Sharding.Database
         /// <summary>
         /// 数据类型映射
         /// </summary>
+        [NotMapped]
         public List<DataTypeMapping> DataTypeMappings
         {
             get
