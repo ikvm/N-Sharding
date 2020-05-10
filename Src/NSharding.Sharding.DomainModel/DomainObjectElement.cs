@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace NSharding.DomainModel.Spi
     /// 领域对象元素
     /// </summary>
     [Serializable]
+    [Table("Meta_DomainObjectElement")]
     public class DomainObjectElement : SystemBase
     {
         /// <summary>

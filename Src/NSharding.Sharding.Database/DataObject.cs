@@ -12,6 +12,7 @@ namespace NSharding.Sharding.Database
     /// 数据对象
     /// </summary>
     [Serializable]
+    [Table("Meta_DataObject")]
     public class DataObject : SystemBase
     {
         /// <summary>

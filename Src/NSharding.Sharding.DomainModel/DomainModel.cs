@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace NSharding.DomainModel.Spi
     /// 领域模型
     /// </summary>
     [Serializable]
+    [Table("Meta_DomainModel")]
     public class DomainModel : SystemBase
     {
         /// <summary>
@@ -27,6 +29,7 @@ namespace NSharding.DomainModel.Spi
         /// <summary>
         /// 根节点领域对象
         /// </summary>
+        [NotMapped]
         public DomainObject RootDomainObject
         {
             get
@@ -54,7 +57,8 @@ namespace NSharding.DomainModel.Spi
 
         /// <summary>
         /// 领域对象集合
-        /// </summary>        
+        /// </summary>  
+        [NotMapped]
         public List<DomainObject> DomainObjects
         {
             get
@@ -101,6 +105,7 @@ namespace NSharding.DomainModel.Spi
         /// <remarks>
         /// 明细级在顶端
         /// </remarks>
+        [NotMapped]
         public List<DomainObject> ReverseDomainObjects
         {
             get

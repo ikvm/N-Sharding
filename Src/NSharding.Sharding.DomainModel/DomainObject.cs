@@ -1,6 +1,7 @@
 ﻿using NSharding.Sharding.Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace NSharding.DomainModel.Spi
     /// 领域对象
     /// </summary>
     [Serializable]
+    [Table("Meta_DomainObject")]
     public class DomainObject : SystemBase
     {
         /// <summary>
@@ -29,6 +31,7 @@ namespace NSharding.DomainModel.Spi
         public bool IsRootObject { get; set; }
 
         [NonSerialized]
+        [NotMapped]
         private DomainModel domainModel;
 
         /// <summary>
@@ -54,6 +57,7 @@ namespace NSharding.DomainModel.Spi
         public string DomainModelID { get; set; }
 
         [NonSerialized]
+        [NotMapped]
         private DomainObject parentObject;
 
         /// <summary>
@@ -84,6 +88,7 @@ namespace NSharding.DomainModel.Spi
         /// <summary>
         /// 子领域对象集合
         /// </summary>
+        [NotMapped]
         public List<DomainObject> ChildDomainObjects
         {
             get
