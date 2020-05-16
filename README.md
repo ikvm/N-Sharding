@@ -19,51 +19,22 @@
 
 # Demo
 ~~~CSharp
-public void AddDataSourceTransaction()
-        {
-            var dataSource = new DataSource()
-            {
-                Name = "DB1",
-                DbType = DbType.SQLServer,
-                IsSharding = true,
-                Description = "DB"
-            };
+[TestMethod]
+public void ChargeBillCRUDTest()
+{
+    var orders = OrderAssert.CreateOrders();
+    var shardingValue = new ShardingValue("Orders", "StationProvince", "21");
 
-            var dbLink = new DatabaseLink()
-            {
-                Name = "DB-SD",
-                ConnectionString = "DB-SD",
-                DataSourceName = "DB1",
-                DataSource = dataSource
-            };
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_QD" });
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_JN" });
-            dbLink.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DB-SD", Name = "CMChargeBills_LY" });
-            dataSource.DbLinks.Add(dbLink);
+    DataAccessService.GetInstance().Save("Orders", orders, shardingValue);
+    var dataTables = DataAccessService.GetInstance().GetData("Orders", orders.ID, shardingValue);
+    Assert.IsNotNull(dataTables);
 
-            var dbLinkHB = new DatabaseLink()
-            {
-                Name = "DBHB",
-                ConnectionString = "DBHB",
-                DataSourceName = "DB1",
-                DataSource = dataSource
-            };
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_BJ" });
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_LF" });
-            dbLinkHB.Tables.Add(new DatabaseTable() { DatabaseLinkName = "DBHB", Name = "CMChargeBills_SJZ" });
-            dataSource.DbLinks.Add(dbLinkHB);
+    orders.AdjustReason = "Begin Charging";
+    orders.AccountingTime = DateTime.Now;
+    orders.SalesOrderDetails[0].SCTaxExPrice = new decimal(19.00);
 
-            var tasks = new List<Task>();
-            for (int i = 0; i < 100; i++)
-            {
-                tasks.Add(
-                Task.Factory.StartNew(() =>
-                {
-                    var manager = new DataSourceManager();
-                    manager.SaveDataSource(dataSource);
-                }));
-            }
+    DataAccessService.GetInstance().Update("Orders", orders, shardingValue);
 
-            Task.WaitAll(tasks.ToArray());
-        }
+    DataAccessService.GetInstance().Delete("Orders", orders.ID, shardingValue);
+}
 ~~~
