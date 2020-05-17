@@ -26,5 +26,35 @@ namespace NSharding.UnitTest
 
             DataAccessService.GetInstance().Delete("Orders", orders.ID, shardingValue);
         }
+
+        [TestMethod]
+        public void SalesOrderCRUDTest()
+        {
+            var dataObject = DomainModelBuilder.CreateDataObject();
+            var domainModel = DomainModelBuilder.CreateDomainModel();
+
+            var dataObjectManager = new NSharding.DomainModel.Manager.DataObjectManager();
+            var domainModelManager = new NSharding.DomainModel.Manager.DomainModelManager();
+            try
+            {
+                dataObjectManager.DeleteDataObject(dataObject.ID);
+                dataObjectManager.SaveDataObject(dataObject);
+
+                domainModelManager.DeleteDomainModel(domainModel.ID);
+                domainModelManager.SaveDomainModel(domainModel);
+
+                var orders = OrderAssert.CreateOrders();
+
+                DataAccessService.GetInstance().Save(domainModel.ID, orders);
+                var dataTables = DataAccessService.GetInstance().GetData(domainModel.ID, orders.ID);
+                Assert.IsNotNull(dataTables);
+
+            }
+            finally
+            {
+                dataObjectManager.DeleteDataObject(dataObject.ID);
+                domainModelManager.DeleteDomainModel(domainModel.ID);
+            }
+        }
     }
 }
