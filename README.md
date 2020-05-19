@@ -1,7 +1,6 @@
 ![logo](https://github.com/zhouguoqing/N-Sharding/blob/master/Resource/N-sharding.png)  
-# N-Sharding
+# N-Sharding ORM framework of distributed database
 # 支持分库分表的数据库访问框架(.NET)
-#  ORM framework of distributed database
 
 # Features
 * 提供领域模型和数据对象的定义，数据对象和数据库的表进行映射，领域模型由数据对象组成，1:m, 1:m:n都支持
