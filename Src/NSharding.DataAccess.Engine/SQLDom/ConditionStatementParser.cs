@@ -51,7 +51,7 @@ namespace NSharding.DataAccess.Core
                         break;
                     case FieldType.Element:
                         element = domainObject.Elements.FirstOrDefault(i => i.Name == field);
-                        column = dataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID);
+                        column = dataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID || i.ID == field);
                         break;
                     case FieldType.FunctionExpression:
                         throw new NotSupportedException("OrderByClause.FieldType.FunctionExpression");
@@ -116,7 +116,7 @@ namespace NSharding.DataAccess.Core
                     element = domainObject.Elements.FirstOrDefault(i => i.DataColumnID == column.ID);
                     break;
                 case FieldType.Element:
-                    element = domainObject.Elements.FirstOrDefault(i => i.Name == filterClause.FilterField.Field);
+                    element = domainObject.Elements.FirstOrDefault(i => i.Name == filterClause.FilterField.Field || i.ID == filterClause.FilterField.Field);
                     column = dataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID);
                     break;
                 case FieldType.FunctionExpression:
