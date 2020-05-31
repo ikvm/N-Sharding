@@ -92,6 +92,7 @@
     <Compile Include="SQLDom\Field.cs" />
     <Compile Include="SQLDom\FieldValue.cs" />
     <Compile Include="SQLDom\Filter\ConditionField.cs" />
+    <Compile Include="SQLDom\Filter\ConditionFieldValue.cs" />
     <Compile Include="SQLDom\Filter\ConditionGroupStatement.cs" />
     <Compile Include="SQLDom\Filter\ConditionStatement.cs" />
     <Compile Include="SQLDom\Filter\FilterConditionStatement.cs" />

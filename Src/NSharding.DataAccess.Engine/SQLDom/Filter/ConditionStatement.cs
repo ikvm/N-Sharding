@@ -52,7 +52,7 @@ namespace NSharding.DataAccess.Core
             }
         }
 
-        public void SetRelationOperator(LogicalOperator loperator)
+        public void SetLogicalOperator(LogicalOperator loperator)
         {
             switch (loperator)
             {
@@ -71,6 +71,14 @@ namespace NSharding.DataAccess.Core
         /// </summary>
         public string ConditionString { get; set; }
 
+        public bool IsExpression { get; set; }
+
+        public ConditionField ConditionField { get; set; } = new ConditionField();
+
+        public ConditionFieldValue ConditionFieldValue { get; set; } = new ConditionFieldValue();
+
+        public RelationalOperator RelationalOperator { get; set; }
+
         #endregion
 
         #region 方法
@@ -81,7 +89,53 @@ namespace NSharding.DataAccess.Core
         /// <returns>SQL语句</returns>
         public override string ToSQL()
         {
-            return ConditionString;
+            if (string.IsNullOrEmpty(ConditionString) == false)
+                return ConditionString;
+
+            var relationOper = RelationalOperatorUtis.ConvertToString(RelationalOperator);
+
+            if (ConditionFieldValue.IsNull)
+            {
+                return string.Format("{0}.{1} is null ", ConditionField.Table.TableName, ConditionField.FieldName);
+            }
+            else
+            {
+                if (relationOper.Value)
+                {
+                    return string.Format("{0}.{1} {2} @{3}", ConditionField.Table.TableName, ConditionField.FieldName, relationOper.Key,
+                        ConditionFieldValue.ConditionFieldName);
+                }
+                else
+                {
+                    return string.Format(ConditionField.Table + "." + ConditionField.FieldName + " " + relationOper.Key,
+                       ConditionFieldValue.ConditionFieldName);
+                }
+            }
+
+            //if (ConditionField.IsNumericField)
+            //{
+
+            //}
+            //else
+            //{
+            //if (ConditionFieldValue.IsNull)
+            //{
+            //    return string.Format("{0}.{1} is null ", ConditionField.Table, ConditionField.FieldName);
+            //}
+            //else
+            //{
+            //    if (relationOper.Value)
+            //    {
+            //        return string.Format("{0} {1}'{2}'", element.Alias, relationOper.Key,
+            //            filterClause.FilterFieldValue.FiledValue);
+            //    }
+            //    else
+            //    {
+            //        return string.Format(element.Alias + " " + relationOper.Key,
+            //           filterClause.FilterFieldValue.FiledValue);
+            //    }
+            //}
+            //}
         }
 
         #endregion

@@ -82,7 +82,7 @@ namespace NSharding.DataAccess.Core
                     foreach (var filter in group)
                     {
                         var conditionStatement = new ConditionStatement();
-                        conditionStatement.SetRelationOperator(filter.LogicalOperator);
+                        conditionStatement.SetLogicalOperator(filter.LogicalOperator);
                         conditionStatement.ConditionString = ConditionStatementParser.ParseFilterClause(filter, domainObject, dataObject);
                         subFilterConditionState.ChildCollection.Add(conditionStatement);
                     }
@@ -95,7 +95,7 @@ namespace NSharding.DataAccess.Core
                 foreach (var filter in filterClauses)
                 {
                     var conditionStatement = new ConditionStatement();
-                    conditionStatement.SetRelationOperator(filter.LogicalOperator);
+                    conditionStatement.SetLogicalOperator(filter.LogicalOperator);
                     conditionStatement.ConditionString = ConditionStatementParser.ParseFilterClause(filter, domainObject, dataObject);
                     filterConditionStatement.ChildCollection.Add(conditionStatement);
                 }
