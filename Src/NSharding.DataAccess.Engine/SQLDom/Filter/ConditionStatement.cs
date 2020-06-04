@@ -107,35 +107,10 @@ namespace NSharding.DataAccess.Core
                 }
                 else
                 {
-                    return string.Format(ConditionField.Table + "." + ConditionField.FieldName + " " + relationOper.Key,
+                    return string.Format(ConditionField.Table.TableName + "." + ConditionField.FieldName + " " + relationOper.Key,
                        ConditionFieldValue.ConditionFieldName);
                 }
             }
-
-            //if (ConditionField.IsNumericField)
-            //{
-
-            //}
-            //else
-            //{
-            //if (ConditionFieldValue.IsNull)
-            //{
-            //    return string.Format("{0}.{1} is null ", ConditionField.Table, ConditionField.FieldName);
-            //}
-            //else
-            //{
-            //    if (relationOper.Value)
-            //    {
-            //        return string.Format("{0} {1}'{2}'", element.Alias, relationOper.Key,
-            //            filterClause.FilterFieldValue.FiledValue);
-            //    }
-            //    else
-            //    {
-            //        return string.Format(element.Alias + " " + relationOper.Key,
-            //           filterClause.FilterFieldValue.FiledValue);
-            //    }
-            //}
-            //}
         }
 
         #endregion
