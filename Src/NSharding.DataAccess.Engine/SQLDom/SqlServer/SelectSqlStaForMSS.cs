@@ -51,7 +51,7 @@ namespace NSharding.DataAccess.Core
         /// <returns>Select SQL语句</returns>
         public override string ToSQL()
         {
-            if (TopSize <= 0)
+            if (PageCount == 0)
             {
                 return base.ToSQL();
             }
@@ -59,7 +59,9 @@ namespace NSharding.DataAccess.Core
             {
                 //判断元数据是否被签出
                 var stringBuilder = new StringBuilder();
-                stringBuilder.Append(string.Format("SELECT TOP {0} {1} FROM {2}", TopSize, SelectList.ToSQL(), From.ToSQL()));
+                var orderbyCondition = OrderByCondition.ToSQL();
+                var rowNumber = string.Format("ROW_NUMBER() Over({0}) as row_num", orderbyCondition);
+                stringBuilder.Append(string.Format("SELECT * FROM (SELECT {0},{1} FROM {2}", SelectList.ToSQL(), rowNumber, From.ToSQL()));
                 foreach (SqlElement element in MainFromItem.ChildCollection)
                 {
                     if (element is InnerJoinItem && (element as InnerJoinItem).IsExtendItem)
@@ -84,10 +86,9 @@ namespace NSharding.DataAccess.Core
                         stringBuilder.AppendFormat(" AND {0} ", filterCondition);
                     }
                 }
-                var orderbyCondition = OrderByCondition.ToSQL();
-                if (!string.IsNullOrWhiteSpace(orderbyCondition))
+                if (PageCount > 0)
                 {
-                    stringBuilder.AppendFormat(" ORDER BY {0}", orderbyCondition);
+                    stringBuilder.AppendFormat(") as tabledata WHERE row_num BETWEEN ({0}-1)*{1}+1 AND ({0}-1)*{1}+{1}", PageIndex, PageCount);                   
                 }
 
                 return stringBuilder.ToString();
