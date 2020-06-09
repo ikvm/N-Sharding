@@ -61,11 +61,13 @@ namespace NSharding.DataAccess.Core
                 elements.Add(field, element);
             }
 
-            return string.Format(" {0} {1}", string.Join(",", elements.Values.Select(i => i.Alias)),
-                orderByClause.OrderByType.ToString());
+            return string.Format("{0} {1}", string.Join(",", columns.Values.Select(i => i.ColumnName)),
+                 orderByClause.OrderByType.ToString());
         }
 
-        public static FilterConditionStatement ParseFiletrClauses(List<FilterClause> filterClauses, DomainObject domainObject, DataObject dataObject)
+
+        public static FilterConditionStatement ParseFiletrClauses(SelectSqlStatement sql, List<FilterClause> filterClauses,
+            DomainObject domainObject, DataObject dataObject)
         {
             var filterConditionStatement = new FilterConditionStatement();
             var filterConditions = new List<ConditionStatement>();
@@ -81,9 +83,8 @@ namespace NSharding.DataAccess.Core
                     var subFilterConditionState = new FilterConditionStatement();
                     foreach (var filter in group)
                     {
-                        var conditionStatement = new ConditionStatement();
-                        conditionStatement.SetLogicalOperator(filter.LogicalOperator);
-                        conditionStatement.ConditionString = ConditionStatementParser.ParseFilterClause(filter, domainObject, dataObject);
+                        var conditionStatement = ParseConditionStatement(filter, domainObject, dataObject, sql.SqlBuildingInfo.CurrentSqlTable);
+
                         subFilterConditionState.ChildCollection.Add(conditionStatement);
                     }
 
@@ -94,14 +95,55 @@ namespace NSharding.DataAccess.Core
             {
                 foreach (var filter in filterClauses)
                 {
-                    var conditionStatement = new ConditionStatement();
-                    conditionStatement.SetLogicalOperator(filter.LogicalOperator);
-                    conditionStatement.ConditionString = ConditionStatementParser.ParseFilterClause(filter, domainObject, dataObject);
+                    var conditionStatement = ParseConditionStatement(filter, domainObject, dataObject, sql.SqlBuildingInfo.CurrentSqlTable);
                     filterConditionStatement.ChildCollection.Add(conditionStatement);
                 }
             }
 
+            for (int i = 0; i < filterConditionStatement.ChildCollection.Count; i++)
+            {
+                var conditionStatement = filterConditionStatement.ChildCollection[i] as ConditionStatement;
+                conditionStatement.ConditionFieldValue.ConditionFieldName += i;
+            }
+
             return filterConditionStatement;
+        }
+
+        private static ConditionStatement ParseConditionStatement(FilterClause filterClause, DomainObject domainObject, DataObject dataObject, SqlTable sqlTable)
+        {
+            var conditionStatement = new ConditionStatement();
+            conditionStatement.SetLogicalOperator(filterClause.LogicalOperator);
+            conditionStatement.ConditionField.Table = sqlTable;
+            conditionStatement.RelationalOperator = filterClause.RelationalOperator;
+            conditionStatement.ConditionFieldValue = new ConditionFieldValue()
+            {
+                ValueType = filterClause.FilterFieldValue.ValueType,
+                IsNull = filterClause.FilterFieldValue.IsNull,
+                Value = filterClause.FilterFieldValue.FiledValue,
+            };
+
+            DataColumn column = null;
+            DomainObjectElement element = null;
+            switch (filterClause.FilterField.FieldType)
+            {
+                case FieldType.Column:
+                    column = dataObject.Columns.FirstOrDefault(i => i.ColumnName == filterClause.FilterField.Field);
+                    conditionStatement.ConditionField.FieldName = column.ColumnName;
+                    break;
+                case FieldType.Element:
+                    element = domainObject.Elements.FirstOrDefault(i => i.Name == filterClause.FilterField.Field || i.ID == filterClause.FilterField.Field);
+                    column = dataObject.Columns.FirstOrDefault(i => i.ID == element.DataColumnID);
+                    conditionStatement.ConditionField.FieldName = column.ColumnName;
+                    break;
+                case FieldType.FunctionExpression:
+                    conditionStatement.IsExpression = true;
+                    conditionStatement.ConditionField.FieldName = filterClause.FilterField.Field;
+                    break;
+                default:
+                    break;
+            }
+            conditionStatement.ConditionFieldValue.ConditionFieldName = column.ColumnName;
+            return conditionStatement;
         }
 
         public static string ParseFilterClause(FilterClause filterClause, DomainObject domainObject, DataObject dataObject)
