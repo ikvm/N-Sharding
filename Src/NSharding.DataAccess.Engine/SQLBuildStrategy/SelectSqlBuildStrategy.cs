@@ -351,7 +351,7 @@ namespace NSharding.DataAccess.Core
                 base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.RootNode, sql.SqlBuildingInfo.RootDataObject);
 
                 // 解析过滤条件
-                var fiterCondition = base.ParseFilterCondition(context);
+                var fiterCondition = base.ParseFilterCondition(sql,context);
                 if (fiterCondition != null)
                 {
                     sql.FilterCondition.ChildCollection.Add(fiterCondition);

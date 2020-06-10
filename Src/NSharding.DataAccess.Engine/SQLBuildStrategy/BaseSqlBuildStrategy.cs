@@ -312,84 +312,7 @@ namespace NSharding.DataAccess.Core
         private FilterConditionStatement GetOrdinaryCondition(SqlBuildingContext context, SqlBuildingInfo sqlBuildInfo)
         {
             return null;
-        }
-
-        ///// <summary>
-        ///// 获取CO上某GSPNode的主键的过滤条件。
-        ///// </summary>
-        ///// <param name="context">SQL构造上下文信息。</param>
-        ///// <param name="curNode">主键过滤条件对应的GSPNode。</param>
-        ///// <param name="curDataObject">主键过滤条件对应的GSPDataTable。</param>
-        ///// <param name="sqlInfo">SQL拼装的中间变量。</param>
-        ///// <returns>主键的过滤条件。</returns>
-        //private string GetPrimaryKeyCondition(SqlBuildingContext context, DomainObject curNode, DataObject curDataObject, SqlBuildingInfo sqlInfo)
-        //{
-        //    var tableName = context.DataObjectTableMapping[curDataObject.ID];
-        //    SqlTable curTable = this.FindSqlTable(tableName, sqlInfo);
-        //    if (curTable == null)
-        //    {
-        //        curTable = new SqlTable(tableName, tableName, tableName);
-        //        this.RegistSqlTable(tableName, curTable, sqlInfo);
-        //    }
-
-        //    var data = context.DataContext.GetCurrentDataContextItem(curNode.ID);
-        //    var primaryKey = new SqlPrimaryKey();
-        //    foreach (var column in curDataObject.PKColumns)
-        //    {
-        //        var keyField = new SqlPrimaryKeyField(curTable, column.ColumnName);
-        //        var pkElement = curNode.Elements.FirstOrDefault(i => i.DataColumnID == column.ID);
-        //        keyField.Value.Value = data.PrimaryKeyData[pkElement.ID];
-        //        keyField.IsUseFieldPrefix = true;
-        //        primaryKey.ChildCollection.Add(keyField);
-        //    }
-
-        //    return primaryKey.ToSQL();
-        //}
-
-
-        //var conditionItem = new FilterConditionStatement();
-        //var tableName = context.DataObjectTableMapping[curDataObject.ID];
-
-        //var data = context.DataContext.GetCurrentDataContextItem(domainObject.ID);
-        //foreach (var pkdata in data.PrimaryKeyData)
-        //{
-        //    var pkElement = domainObject.Elements.FirstOrDefault(i => i.ID == pkdata.Key);
-        //    var pkColumn = domainObject.DataObject.PKColumns.FirstOrDefault(c => c.ID == pkElement.DataColumnID);
-        //    bool isTextType = DataTypeUtils.IsTextType(pkColumn.DataObjectID);
-
-        //    var key = new SqlPrimaryKeyField();
-
-
-        //    if (isTextType)
-        //    {
-        //        var keyCondition = new KeyValueConditionStatement<string>();
-        //        keyCondition.Field.FieldName = pkColumn.ColumnName;
-
-        //        var sqlTable = this.TryFindAndRegistSqlTable(tableName, tableName, tableName, tableName, sqlInfo);
-        //        keyCondition.Field.IsUseFieldPrefix = true;
-        //        keyCondition.Field.Table = sqlTable;
-
-        //        keyCondition.Value = Convert.ToString(pkdata.Value);
-        //        keyCondition.RelationOperator = OperatorType.And;
-        //        conditionItem.ChildCollection.Add(keyCondition);
-        //    }
-        //    else
-        //    {
-        //        var keyCondition = new KeyValueConditionStatement<long>();
-        //        keyCondition.Field.FieldName = pkColumn.ColumnName;
-
-        //        var sqlTable = this.TryFindAndRegistSqlTable(tableName, tableName, tableName, tableName, sqlInfo);
-        //        keyCondition.Field.IsUseFieldPrefix = true;
-        //        keyCondition.Field.Table = sqlTable;
-
-        //        keyCondition.Value = Convert.ToInt64(pkdata.Value);
-        //        keyCondition.RelationOperator = OperatorType.And;
-        //        conditionItem.ChildCollection.Add(keyCondition);
-        //    }
-
-        //}
-
-        //return conditionItem;
+        }        
 
         /// <summary>
         /// 获取主键过滤条件。
@@ -529,16 +452,21 @@ namespace NSharding.DataAccess.Core
             return orderByCondition;
         }
 
-        internal FilterConditionStatement ParseFilterCondition(SqlBuildingContext context)
+        internal FilterConditionStatement ParseFilterCondition(SelectSqlStatement sql, SqlBuildingContext context)
         {
             if (context.QueryFilter != null)
             {
-                return ConditionStatementParser.ParseFiletrClauses(context.QueryFilter.FilterClauses,
+                var filter = ConditionStatementParser.ParseFiletrClauses(sql, context.QueryFilter.FilterClauses,
                     context.Node, context.DataObject);
+
+
+
+                return filter;
             }
 
             return null;
         }
+
 
         internal ConditionStatement ParseOrderByCondition(SqlBuildingContext context)
         {
