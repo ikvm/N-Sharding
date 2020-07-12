@@ -351,7 +351,7 @@ namespace NSharding.DataAccess.Core
                 base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.RootNode, sql.SqlBuildingInfo.RootDataObject);
 
                 // 解析过滤条件
-                var fiterCondition = base.ParseFilterCondition(sql,context);
+                var fiterCondition = base.ParseFilterCondition(sql, context);
                 if (fiterCondition != null)
                 {
                     sql.FilterCondition.ChildCollection.Add(fiterCondition);
@@ -386,8 +386,13 @@ namespace NSharding.DataAccess.Core
                     base.GetSelectSqlCondition(sql, context, sql.SqlBuildingInfo.CurrentNode, sql.SqlBuildingInfo.CurrentDataObject);
 
                 // 解析排序条件
-                sql.OrderByCondition.ConditionString =
-                                     base.ParseOrderByCondition(context.OrderByCondition, sql.SqlBuildingInfo);
+                sql.OrderByCondition = base.ParseOrderByCondition(context);
+
+                // 获取前多少条数据。
+                if (context.QueryFilter != null && context.QueryFilter.LimitCount > 0)
+                {
+                    sql.TopSize = context.QueryFilter.LimitCount;
+                }
             }
 
             // 分页设置
