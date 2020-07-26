@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DataAccessService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryFilterValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NSharding.ORMapping.Service\NSharding.ORMapping.Service.csproj">
